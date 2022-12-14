@@ -1,62 +1,41 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import TodoList, {TaskType}from "./TodoList";
+import TodoList, {TasksType} from "./TodoList";
 import {useState} from "react";
 
-export type FilterValuesType = "all" | "active" | "completed";
+export type FilterValueType = 'all' | 'active' | 'completed';
 
 function App() {
-    const todoListTitle_1: string = 'What to learn';
-    const todoListTitle_2: string = 'What to buy';
-    const [tasks_1, setTasks] = useState([{id: 1, title: "HTML & CSS", isDone: true},
-                        {id: 2, title: "ES6 & TS", isDone: true},
-                        {id: 3, title: "REACT", isDone: false},
-                        {id: 4, title: "ANGULAR", isDone: true}]);
-    //function
+    const todoList_title: string = 'what to learn';
 
-    const tasks_2: Array<TaskType> = [
-        {id: 1, title: "juice", isDone: true},
-        {id: 2, title: "carrot", isDone: false},
-        {id: 3, title: "orange", isDone: false},
-        {id: 4, title: "milk", isDone: true},
-    ];
+    const [tasks, setTasks] = useState<Array<TasksType>>([{id: 1, title: "HTML & CSS", isDone: true},
+            {id: 2, title: "ES6 & TS", isDone: true},
+            {id: 3, title: "REACT", isDone: false},
+            {id: 4, title: "ANGULAR", isDone: true}]);
 
-    const [filter, setFilter] = useState<FilterValuesType>("active");
+    const [filter, setFilter] = useState<FilterValueType>('all');
 
-
-    const removeTask = (taskId: number) => {
-        setTasks(tasks_1.filter(t => t.id !== taskId)); //уходит 5-10мс
-        console.log(tasks_1) // почему показывает 4, хотя должно быть 3. не обновляет state синхронно.
-        // поэтому мы выкидываем предыдущий state, так как state работает асинхронно
-    };
-
-    const changeFilter = (filter: FilterValuesType) => {
-        setFilter(filter);
+    const removeTask = (id:number) => {
+        setTasks(tasks.filter(t => t.id !== id));
     }
 
-    const getFilteredTasksForRender= () => {
-        let tasksForRender;
-        switch(filter){
-            case "active":
-                return tasks_1.filter(t => t.isDone === false);
-            case "completed":
-                return tasks_1.filter(t => t.isDone === true);
-            default:
-                return tasks_1;
-        }
-
-        return tasksForRender;
+    const getFilteredTasksForRender = (filter: FilterValueType) => {
+         switch(filter){
+             case 'active':
+                 return tasks.filter(t => t.isDone === false);
+             case "completed":
+                 return tasks.filter(t => t.isDone === true);
+             default: return tasks;
+         }
     }
 
-    const filteredTasksForRender: Array<TaskType> = getFilteredTasksForRender();
-
-/*    useEffect(() => {
-        console.log(tasks_1)
-    }, [tasks_1]); //работает синхронно*/
 
     return (
         <div className="App">
-            <TodoList title={todoListTitle_1}  tasks={filteredTasksForRender} removeTasks={removeTask} changeFilter={changeFilter}/>
+            <TodoList title={todoList_title}
+                      tasks={getFilteredTasksForRender(filter)}
+                      removeTask={removeTask}
+                      setFilter = {setFilter}/>
         </div>
     );
 }
