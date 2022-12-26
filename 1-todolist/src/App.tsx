@@ -7,7 +7,6 @@ import {v1} from "uuid";
 export type FilterValueType = 'all' | 'active' | 'completed';
 
 function App() {
-    console.log(typeof v1())
     const todoList_title: string = 'what to learn';
 
     const [tasks, setTasks] = useState<Array<TasksType>>([
@@ -23,22 +22,23 @@ function App() {
     }
 
     const getFilteredTasksForRender = (filter: FilterValueType) => {
-         switch(filter){
-             case 'active':
-                 return tasks.filter(t => !t.isDone);
-             case "completed":
-                 return tasks.filter(t => t.isDone);
-             default:
-                 return tasks;
-         }
+        switch(filter){
+            case 'active':
+                return tasks.filter(t => !t.isDone);
+            case "completed":
+                return tasks.filter(t => t.isDone);
+            default:
+                return tasks;
+        }
     }
 
-    const addTask = (title: string) => {
-        const newTask : TasksType = {
+    const addNewTask = (title: string) => {
+        const newTask: TasksType = {
             id: v1(),
             title: title,
             isDone: false
         }
+
         setTasks([newTask, ...tasks])
     }
 
@@ -48,9 +48,11 @@ function App() {
                       tasks={getFilteredTasksForRender(filter)}
                       removeTask={removeTask}
                       setFilter = {setFilter}
-                    addTask={addTask}/>
+                      addNewTask={addNewTask}
+                    />
         </div>
     );
 }
 
 export default App;
+
