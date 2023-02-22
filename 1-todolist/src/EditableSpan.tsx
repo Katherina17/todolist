@@ -1,31 +1,31 @@
-import {ChangeEvent, useState} from "react";
+import TextField from '@mui/material/TextField/TextField';
+import React, {ChangeEvent, memo, useCallback, useState} from 'react';
 
-type PropsType = {
-    title: string;
-    callBack: (newTitle: string) => void;
+
+type EditableSpanPropsType = {
+    value: string
+    onChange: (newValue: string) => void
 }
 
-export const EditableSpan = (props: PropsType) => {
-    const[edit, setEdit] = useState(false);
-    const[newTitle, setNewTitle] = useState(props.title);
-    const onDoubleClickHandler = () => {
-        setEdit(!edit);
-        addTask();
-    }
-    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.currentTarget.value);
+export const EditableSpan = memo((props: EditableSpanPropsType) => {
+    let [editMode, setEditMode] = useState(false);
+    let [title, setTitle] = useState(props.value);
+
+    const activateEditMode = useCallback(() => {
+        setEditMode(true);
+        setTitle(props.value);
+    }, [props.value])
+    const activateViewMode = useCallback(() => {
+        setEditMode(false);
+        props.onChange(title);
+    }, [props.onChange])
+    const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
     }
 
-    const addTask = () => {
-        props.callBack(newTitle)
-    }
-
-    return(
-        edit ? <input type={'text'} value={newTitle}
-                      onBlur={onDoubleClickHandler}
-                      autoFocus
-                      onChange={onChangeInputHandler}
-            />
-                : <span onDoubleClick={onDoubleClickHandler}> {props.title}</span>
-    )
-}
+    return editMode
+        ? <TextField variant="outlined"
+                     value={title} onChange={changeTitle}
+                     autoFocus onBlur={activateViewMode}/>
+        : <span onDoubleClick={activateEditMode}>{props.value}</span>
+})
