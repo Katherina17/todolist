@@ -1,6 +1,6 @@
 import React, {ChangeEvent, memo, useCallback} from "react";
 import {Checkbox} from "@mui/material";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {IconButtonDeleteMemo} from "./Todolist";
 
 export type TaskPropsType = {

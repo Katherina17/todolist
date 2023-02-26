@@ -1,9 +1,9 @@
 import {IconButtonDeleteMemo, TaskType} from "./Todolist";
 import {Checkbox} from "@mui/material";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import React, {ChangeEvent, useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../state/tasks-reducer";
 
 type TaskWithReduxPropsType = {
     task: TaskType,
@@ -23,7 +23,6 @@ export const TaskWithRedux = ({task, todoListId}: TaskWithReduxPropsType) => {
                 color="primary"
                 onChange={() => dispatch(changeTaskStatusAC(task.id, !task.isDone, todoListId))}
             />
-
             <EditableSpan value={task.title} onChange={onTitleChangeHandler}/>
             <IconButtonDeleteMemo onClickHandler={onClickHandler}/>
         </div>

@@ -18,7 +18,7 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
     const activateViewMode = useCallback(() => {
         setEditMode(false);
         props.onChange(title);
-    }, [props.onChange])
+    }, [props.onChange, title])
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
