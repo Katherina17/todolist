@@ -9,7 +9,6 @@ const instance = axios.create({
         },*/
     })
 
-
 export const todolistAPI = {
     getTodoList(){
         return instance.get<TodoListType[]>('todo-lists')
@@ -40,18 +39,6 @@ type ResponseType<T = {}> = {
     data: T
 }
 
-type updateTodolistTitle = {
-    data: {}
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-}
 
 
-type createTodolist = {
-    data: {items: TodoListType}
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-}
 
