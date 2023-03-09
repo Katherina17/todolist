@@ -25,7 +25,7 @@ export const todolistAPI = {
 
 }
 
-type TodoListType = {
+export type TodoListType = {
     addedDate: string,
     id: string,
     order: number,

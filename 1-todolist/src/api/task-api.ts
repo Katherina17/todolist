@@ -1,4 +1,5 @@
 import axios from "axios";
+import {TaskType} from "../state/tasks-reducer";
 
 const instance = axios.create({
         baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -31,18 +32,7 @@ type getTaskType = {
     totalCount: number
 }
 
-type TaskType = {
-    addedDate: string
-    deadline: null | string
-    description: null | string
-    id: string
-    order: number
-    priority: number
-    startDate: null | string
-    status: number
-    title: string
-    todoListId: string
-}
+
 
 type ResponseType<T = TaskType> = {
     fieldsErrors: string[]

@@ -6,13 +6,9 @@ import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
 import {TaskWithRedux} from "./TaskWithRedux";
+import {TaskStatuses, TaskType} from "../state/tasks-reducer";
 
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
 
 type PropsType = {
     id: string
@@ -21,7 +17,7 @@ type PropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
-    changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
+    changeTaskStatus: (id: string, status: number, todolistId: string) => void
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
@@ -32,10 +28,10 @@ export const Todolist = memo((props: PropsType) => {
     let tasks = props.tasks;
 
     if (props.filter === "active") {
-        tasks = tasks.filter(t => !t.isDone);
+        tasks = tasks.filter(t => t.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasks = tasks.filter(t => t.isDone);
+        tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
     }
 
 
@@ -62,10 +58,11 @@ export const Todolist = memo((props: PropsType) => {
         <AddItemForm addItem={addTask}/>
         <div>
             {
-                tasks.map(t => {
+                tasks.length !== 0 ? tasks.map(t => {
                     return <TaskWithRedux key={t.id} task={t} todoListId={props.id}/>
-                })
+                }) : 'sorry, no tasks'
             }
+
         </div>
         <div>
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
@@ -91,7 +88,6 @@ type IconButtonDeleteMemoPropsType = {
 }
 
 export const IconButtonDeleteMemo = memo(({onClickHandler}: IconButtonDeleteMemoPropsType) => {
-    console.log('IconButtonDeleteMemo')
     return <IconButton onClick={onClickHandler}>
         <Delete />
     </IconButton>

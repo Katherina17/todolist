@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {FilterValuesType, TodolistType} from "../App";
+import {FilterValuesType, ValidTodoListType} from "../App";
 import {
     addTodoListAC,
     changeFilterAC,
@@ -12,24 +12,20 @@ let todolistId1:string;
 let todolistId2:string;
 let newTodolistTitle:string;
 
-let startState: Array<TodolistType> = [];
+let startState: Array<ValidTodoListType> = [];
 
 beforeEach(() => {
      todolistId1 = v1();
      todolistId2 = v1();
-
     newTodolistTitle = "New Todolist"
-
      startState= [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+         {addedDate: '', id: todolistId1, order: 5, title: "What to learn", filter: "all"},
+         {addedDate: '', id: todolistId2, order: 2, title: "What to buy", filter: "all"}
     ]
 })
 
 
 test('correct todolist should be removed', () => {
-
-
     const endState = TodoListReducer(startState, removeTodoListAC(todolistId1))
 
     expect(endState.length).toBe(1);

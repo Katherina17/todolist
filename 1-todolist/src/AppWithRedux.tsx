@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import './App.css';
-import {TaskType, Todolist} from './TodoList/Todolist';
+import {Todolist} from './TodoList/Todolist';
 import {AddItemForm} from './AddItemForm/AddItemForm';
 import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
@@ -9,7 +9,7 @@ import {
     addTaskAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
-    removeTaskAC,
+    removeTaskAC, TaskStatuses, TaskType,
 } from "./state/tasks-reducer";
 import {
     addTodoListAC,
@@ -47,8 +47,8 @@ function AppWithRedux() {
       dispatch(addTaskAC(title, todolistId))
     }, [])
 
-    const changeStatus = useCallback((id: string, isDone: boolean, todolistId: string) => {
-        dispatch(changeTaskStatusAC(id, isDone, todolistId))
+    const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
+        dispatch(changeTaskStatusAC(id, status, todolistId))
     }, [])
 
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {

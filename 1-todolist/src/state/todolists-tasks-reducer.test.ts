@@ -1,10 +1,10 @@
-import {TasksStateType, TodolistType} from "../App";
+import {TasksStateType, ValidTodoListType} from "../App";
 import {addTodoListAC, removeTodoListAC, TodoListReducer} from "./todolists-reducer";
-import {tasksReducer} from "./tasks-reducer";
+import {TaskPriorities, tasksReducer, TaskStatuses} from "./tasks-reducer";
 
 test('ids should be equals', () => {
     const startTasksState: TasksStateType = {}
-    const startTodolistsState: Array<TodolistType> = []
+    const startTodolistsState: Array<ValidTodoListType> = []
 
     const action = addTodoListAC('new todolist')
 
@@ -22,14 +22,19 @@ test('ids should be equals', () => {
 test('property with todolistId should be deleted', () => {
     const startState: TasksStateType = {
         'todolistId1': [
-            {id: '1', title: 'CSS', isDone: false},
-            {id: '2', title: 'JS', isDone: true},
-            {id: '3', title: 'React', isDone: false}
+            {
+                addedDate: '', deadline: null, description: null, id: '1', order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: 'todolistId1'
+            }, {
+                addedDate: '', deadline: null, description: null, id: '2', order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'REDUX', todoListId: 'todolistId1'
+            },
         ],
         'todolistId2': [
-            {id: '1', title: 'bread', isDone: false},
-            {id: '2', title: 'milk', isDone: true},
-            {id: '3', title: 'tea', isDone: false}
+            {
+                addedDate: '', deadline: null, description: null, id: '1', order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: 'todolistId2'
+            },
         ]
     }
 
