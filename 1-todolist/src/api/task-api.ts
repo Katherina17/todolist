@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskType} from "../state/tasks-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "../state/tasks-reducer";
 
 const instance = axios.create({
         baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -15,13 +15,13 @@ export const taskAPI = {
         return instance.get<getTaskType>(`todo-lists/${todolistID}/tasks`)
     },
     createTask(todolistID: string, title:string){
-        return instance.post<ResponseType>(`todo-lists/${todolistID}/tasks`,{title})
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistID}/tasks`,{title})
     },
     deleteTask(todoListID: string, taskID: string){
         return instance.delete<ResponseType>(`/todo-lists/${todoListID}/tasks/${taskID}`)
     },
-    updateTaskTitle(todoListID: string, taskID: string, title: string){
-        return instance.put<ResponseType>(`/todo-lists/${todoListID}/tasks/${taskID}`, {title})
+    updateTask(todoListID: string, taskID: string, payload: modelUpdateTask){
+        return instance.put<ResponseType>(`/todo-lists/${todoListID}/tasks/${taskID}`, payload)
     }
 
 }
@@ -33,6 +33,16 @@ type getTaskType = {
 }
 
 
+export type modelUpdateTask = {
+    title: string,
+    description: string | null,
+    completed: boolean,
+    status: TaskStatuses,
+    priority: TaskPriorities,
+    startDate: string | null,
+    deadline: string | null,
+
+}
 
 type ResponseType<T = TaskType> = {
     fieldsErrors: string[]

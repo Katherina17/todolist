@@ -7,7 +7,7 @@ import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    addTaskAC,
+    addTaskAC, addTaskTC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC, TaskPriorities,
@@ -43,40 +43,40 @@ function App() {
         [todolistId1]: [
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: todolistId1
+                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: todolistId1, completed: false
             },
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: todolistId1
+                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: todolistId1, completed: true
             },
         ],
         [todolistId2]: [
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: todolistId2
+                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: todolistId2, completed: false
             },
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: todolistId2
+                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: todolistId2, completed: true
             },
         ],
 
     },);
 
     function removeTask(id: string, todolistId: string) {
-        dispatchTasks(removeTaskAC(id,todolistId))
+       /* dispatchTasks(removeTaskAC(id,todolistId))*/
     }
 
     function addTask(title: string, todolistId: string) {
-      dispatchTasks(addTaskAC(title, todolistId))
+
     }
 
     function changeStatus(id: string, status: number, todolistId: string) {
-        dispatchTasks(changeTaskStatusAC(id, status, todolistId))
+       /* dispatchTasks(changeTaskStatusAC(id, status, todolistId))*/
     }
 
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        dispatchTasks(changeTaskTitleAC(id, newTitle, todolistId))
+      /*  dispatchTasks(changeTaskTitleAC(id, newTitle, todolistId))*/
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
@@ -91,7 +91,7 @@ function App() {
         // засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
         setTodolists(todolists.filter(tl => tl.id != id));
         // удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
-        dispatchTasks(removeTodoListAC(id))
+    /*    dispatchTasks(removeTodoListAC(id))*/
     }
 
     function changeTodolistTitle(id: string, title: string) {
@@ -108,7 +108,7 @@ function App() {
         let newTodolistId = v1();
         let newTodolist: ValidTodoListType = {addedDate: '', id: newTodolistId, order: 5, title: title, filter: "all"};
         setTodolists([newTodolist, ...todolists]);
-        dispatchTasks(addTodoListAC(title))
+       /* dispatchTasks(addTodoListAC(title))*/
     }
 
     return (
@@ -147,11 +147,8 @@ function App() {
                                         key={tl.id}
                                         id={tl.id}
                                         title={tl.title}
-                                        tasks={tasksForTodolist}
-                                        removeTask={removeTask}
                                         changeFilter={changeFilter}
                                         addTask={addTask}
-                                        changeTaskStatus={changeStatus}
                                         filter={tl.filter}
                                         removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}

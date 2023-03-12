@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {todolistAPI} from "../api/todolist-api";
 import {taskAPI} from "../api/task-api";
+import {TaskPriorities, TaskStatuses} from "../state/tasks-reducer";
 
 export default {
     title: 'API'
@@ -46,9 +47,18 @@ export const UpdateTaskTitle = () => {
     const [state, setState] = useState<any>(null)
     const todolistID = 'b6312150-4ffe-41e2-b32e-c4216529f203';
     const taskID = '99a26920-fcb8-434d-ad2e-456ed4a0b6a3'
+    let modal = {
+        title: '.net',
+        startDate: '',
+        priority: TaskPriorities.Low,
+        description: 'string',
+        deadline: 'string',
+        status: TaskStatuses.New,
+        completed: false
+    }
     const title = '.net'
     useEffect(() => {
-       taskAPI.updateTaskTitle(todolistID, taskID, title).then(res => {
+       taskAPI.updateTask(todolistID, taskID, modal).then(res => {
            setState(res.data)
        })
     }, [])

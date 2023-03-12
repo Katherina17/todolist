@@ -1,6 +1,7 @@
 import {TasksStateType, ValidTodoListType} from "../App";
 import {addTodoListAC, removeTodoListAC, TodoListReducer} from "./todolists-reducer";
 import {TaskPriorities, tasksReducer, TaskStatuses} from "./tasks-reducer";
+import {v1} from "uuid";
 
 test('ids should be equals', () => {
     const startTasksState: TasksStateType = {}
@@ -23,19 +24,24 @@ test('property with todolistId should be deleted', () => {
     const startState: TasksStateType = {
         'todolistId1': [
             {
-                addedDate: '', deadline: null, description: null, id: '1', order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: 'todolistId1'
-            }, {
-                addedDate: '', deadline: null, description: null, id: '2', order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'REDUX', todoListId: 'todolistId1'
+                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: 'todolistId1', completed: false
+            },
+            {
+                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: 'todolistId1', completed: true
             },
         ],
         'todolistId2': [
             {
-                addedDate: '', deadline: null, description: null, id: '1', order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: 'todolistId2'
+                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: 'todolistId2', completed: false
             },
-        ]
+            {
+                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
+                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: 'todolistId2', completed: true
+            },
+        ],
     }
 
     const action = removeTodoListAC('todolistId2')

@@ -39,21 +39,21 @@ function AppWithReducer() {
         [todolistId1]: [
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: todolistId1
+                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: todolistId1, completed: false
             },
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: todolistId1
+                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: todolistId1, completed: true
             },
         ],
         [todolistId2]: [
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: todolistId2
+                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: todolistId2, completed: false
             },
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: todolistId2
+                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: todolistId2, completed: true
             },
         ],
     }, );
@@ -63,7 +63,7 @@ function AppWithReducer() {
     }
 
     function addTask(title: string, todolistId: string) {
-      dispatchTasks(addTaskAC(title, todolistId))
+
     }
 
     function changeStatus(id: string, status: number, todolistId: string) {
@@ -128,11 +128,8 @@ function AppWithReducer() {
                                         key={tl.id}
                                         id={tl.id}
                                         title={tl.title}
-                                        tasks={tasksForTodolist}
-                                        removeTask={removeTask}
                                         changeFilter={changeFilter}
                                         addTask={addTask}
-                                        changeTaskStatus={changeStatus}
                                         filter={tl.filter}
                                         removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}
