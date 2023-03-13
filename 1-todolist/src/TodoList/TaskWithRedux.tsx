@@ -6,7 +6,7 @@ import {useDispatch} from "react-redux";
 import {
     changeTaskTitleAC, deleteTaskTC,
     TaskStatuses,
-    TaskType, updateTaskStatusTC
+    TaskType, updateTaskStatusTC, updateTaskTitleTC
 } from "../state/tasks-reducer";
 
 type TaskWithReduxPropsType = {
@@ -17,7 +17,7 @@ type TaskWithReduxPropsType = {
 export const TaskWithRedux = ({task, todoListId}: TaskWithReduxPropsType) => {
     const dispatch:any = useDispatch();
     const onTitleChangeHandler =  (newValue: string) => {
-       dispatch(changeTaskTitleAC(task.id, newValue, todoListId))
+       dispatch(updateTaskTitleTC(task.id, newValue, todoListId))
     }
 
     const onClickHandler = () => dispatch(deleteTaskTC(task.id, todoListId))

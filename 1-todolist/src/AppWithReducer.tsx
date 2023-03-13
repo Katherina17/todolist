@@ -88,7 +88,7 @@ function AppWithReducer() {
     }
 
     function addTodolist(title: string) {
-        let action =  addTodoListAC(title);
+        let action =  addTodoListAC( {addedDate: '', id: todolistId1, order: 5, title: "What to learn"}, '47287462');
         dispatchTodoList(action);
         dispatchTasks(action)
     }
@@ -131,7 +131,6 @@ function AppWithReducer() {
                                         changeFilter={changeFilter}
                                         addTask={addTask}
                                         filter={tl.filter}
-                                        removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}
                                     />

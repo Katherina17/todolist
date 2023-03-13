@@ -47,7 +47,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: commo
         }
         case "SET_TODOLISTS": {
             let copyState = {...state}
-
             action.payload.todoLists.forEach(td => {
                 copyState[td.id] = []
             })
@@ -158,13 +157,34 @@ export const updateTaskStatusTC = (id: string, status: TaskStatuses, todoListId:
                     completed: currentTask!.completed
                 }
                 taskAPI.updateTask(todoListId, id, updateModal).then(res => {
-                    console.log(res)
                     dispatch(changeTaskStatusAC(id, status, todoListId))
                 })
             }
-
-
    }
+}
+
+export const updateTaskTitleTC = (id: string, title: string, todoListId: string) => {
+    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        let allTasks = getState().tasks;
+        let tasksForCurrentTodolist = allTasks[todoListId];
+        let currentTask = tasksForCurrentTodolist.find(el => el.id === id)
+        if(tasksForCurrentTodolist){
+            let updateModal:modelUpdateTask = {
+                title: title,
+                startDate: currentTask!.startDate,
+                priority: currentTask!.priority,
+                description: currentTask!.description,
+                deadline: currentTask!.deadline,
+                status: currentTask!.status,
+                completed: currentTask!.completed
+            }
+            taskAPI.updateTask(todoListId, id, updateModal).then(res => {
+                dispatch(changeTaskTitleAC(id, title, todoListId))
+            })
+        }
+
+
+    }
 }
 
 export enum TaskStatuses {
