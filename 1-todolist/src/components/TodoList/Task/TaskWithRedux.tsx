@@ -1,13 +1,12 @@
-import {IconButtonDeleteMemo} from "./Todolist";
+import {IconButtonDeleteMemo} from "../Todolist";
 import {Checkbox} from "@mui/material";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import React from "react";
 import {useDispatch} from "react-redux";
-import {
-    changeTaskTitleAC, deleteTaskTC,
+import {deleteTaskTC,
     TaskStatuses,
     TaskType, updateTaskStatusTC, updateTaskTitleTC
-} from "../state/tasks-reducer";
+} from "../../../features/TodoListsList/tasks-reducer";
 
 type TaskWithReduxPropsType = {
     task: TaskType,

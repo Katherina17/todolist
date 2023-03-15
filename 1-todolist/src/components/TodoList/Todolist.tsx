@@ -1,16 +1,15 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {FilterValuesType} from '../App';
+import {FilterValuesType, TasksStateType} from '../../trash/App';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
-import {TaskWithRedux} from "./TaskWithRedux";
-import {addTaskTC, getTasksTC, TaskStatuses} from "../state/tasks-reducer";
+import {TaskWithRedux} from "./Task/TaskWithRedux";
+import {addTaskTC, getTasksTC, TaskStatuses} from "../../features/TodoListsList/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
-import {TasksStateType} from "../AppWithRedux";
-import {deleteTodoListsTC} from "../state/todolists-reducer";
+import {AppRootStateType} from "../../app/store";
+import {deleteTodoListsTC} from "../../features/TodoListsList/todolists-reducer";
 
 
 
@@ -64,7 +63,7 @@ export const Todolist = memo((props: PropsType) => {
             {
                 tasks.length !== 0 ? tasks.map(t => {
                     return <TaskWithRedux key={t.id} task={t} todoListId={props.id}/>
-                }) : 'sorry, no tasks'
+                }) : <p> sorry, no tasks </p>
             }
 
         </div>

@@ -2,7 +2,7 @@ import {ComponentMeta, ComponentStory} from "@storybook/react";
 import React from "react";
 import {TaskWithRedux} from "./TaskWithRedux";
 import {action} from "@storybook/addon-actions";
-import {TaskPriorities, TaskStatuses} from "../state/tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "../../../features/TodoListsList/tasks-reducer";
 
 export default {
     title: 'TODOLIST/Task',

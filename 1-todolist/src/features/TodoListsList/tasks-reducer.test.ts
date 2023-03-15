@@ -6,7 +6,7 @@ import {
     tasksReducer,
     TaskStatuses
 } from './tasks-reducer'
-import {TasksStateType} from '../App'
+import {TasksStateType} from '../../trash/App'
 import {addTodoListAC} from "./todolists-reducer";
 
 let startState: TasksStateType = {}
