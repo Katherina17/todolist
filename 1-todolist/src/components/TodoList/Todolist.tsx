@@ -8,8 +8,10 @@ import {Button} from "@mui/material";
 import {TaskWithRedux} from "./Task/TaskWithRedux";
 import {addTaskTC, getTasksTC, TaskStatuses} from "../../features/TodoListsList/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../app/store";
-import {deleteTodoListsTC} from "../../features/TodoListsList/todolists-reducer";
+import {AppRootStateType, useAppDispatch} from "../../app/store";
+import {changeEntityStatusAC, deleteTodoListsTC} from "../../features/TodoListsList/todolists-reducer";
+import {RequestStatusType} from "../../app/appReducer";
+import {AnyAction, Dispatch} from "redux";
 
 
 
@@ -21,11 +23,12 @@ type PropsType = {
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const Todolist = memo((props: PropsType) => {
     let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)[props.id];
-    let dispatch:any = useDispatch();
+    const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getTasksTC(props.id))
     }, [])
@@ -56,9 +59,9 @@ export const Todolist = memo((props: PropsType) => {
 
     return <div>
         <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
-            <IconButtonDeleteMemo onClickHandler={removeTodolist}/>
+            <IconButtonDeleteMemo onClickHandler={removeTodolist} disabled={props.entityStatus === 'loading'}/>
         </h3>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
         <div>
             {
                 tasks.length !== 0 ? tasks.map(t => {
@@ -87,11 +90,12 @@ export const Todolist = memo((props: PropsType) => {
 
 
 type IconButtonDeleteMemoPropsType = {
-    onClickHandler: () => void
+    onClickHandler: () => void,
+    disabled?: boolean
 }
 
-export const IconButtonDeleteMemo = memo(({onClickHandler}: IconButtonDeleteMemoPropsType) => {
-    return <IconButton onClick={onClickHandler}>
+export const IconButtonDeleteMemo = memo(({onClickHandler, disabled}: IconButtonDeleteMemoPropsType) => {
+    return <IconButton onClick={onClickHandler} disabled={disabled}>
         <Delete />
     </IconButton>
 })

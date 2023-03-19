@@ -7,14 +7,12 @@ import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    addTaskAC, addTaskTC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC, TaskPriorities,
-    tasksReducer, TaskStatuses, TaskType
-} from "../features/TodoListsList/tasks-reducer";
-import {addTodoListAC, removeTodoListAC} from "../features/TodoListsList/todolists-reducer";
+    TaskPriorities,
+    tasksReducer,
+    TaskStatuses,
+    TaskType} from "../features/TodoListsList/tasks-reducer";
 import {TodoListType} from "../api/todolist-api";
+import {RequestStatusType} from "../app/appReducer";
 
 
 
@@ -22,7 +20,8 @@ export type FilterValuesType = "all" | "active" | "completed";
 
 
 export type ValidTodoListType = TodoListType & {
-    filter: FilterValuesType
+    filter: FilterValuesType,
+    entityStatus: RequestStatusType
 }
 
 export type TasksStateType = {
@@ -35,8 +34,8 @@ function App() {
     let todolistId2 = v1();
 
     let [todolists, setTodolists] = useState<Array<ValidTodoListType>>([
-        {addedDate: '', id: todolistId1, order: 5, title: "What to learn", filter: "all"},
-        {addedDate: '', id: todolistId2, order: 2, title: "What to buy", filter: "all"}
+        {addedDate: '', id: todolistId1, order: 5, title: "What to learn", filter: "all", entityStatus: 'idle'},
+        {addedDate: '', id: todolistId2, order: 2, title: "What to buy", filter: "all", entityStatus: 'idle'}
     ])
 
     let [tasks, dispatchTasks] = useReducer(tasksReducer, {
@@ -106,8 +105,8 @@ function App() {
 
     function addTodolist(title: string) {
         let newTodolistId = v1();
-        let newTodolist: ValidTodoListType = {addedDate: '', id: newTodolistId, order: 5, title: title, filter: "all"};
-        setTodolists([newTodolist, ...todolists]);
+       /* let newTodolist: ValidTodoListType = {addedDate: '', id: newTodolistId, order: 5, title: title, filter: "all"};
+        setTodolists([newTodolist, ...todolists]);*/
        /* dispatchTasks(addTodoListAC(title))*/
     }
 
@@ -152,6 +151,7 @@ function App() {
                                         filter={tl.filter}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}
+                                        entityStatus={tl.entityStatus}
                                     />
                                 </Paper>
                             </Grid>

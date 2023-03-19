@@ -7,6 +7,7 @@ import {deleteTaskTC,
     TaskStatuses,
     TaskType, updateTaskStatusTC, updateTaskTitleTC
 } from "../../../features/TodoListsList/tasks-reducer";
+import {useAppDispatch} from "../../../app/store";
 
 type TaskWithReduxPropsType = {
     task: TaskType,
@@ -14,7 +15,7 @@ type TaskWithReduxPropsType = {
 }
 
 export const TaskWithRedux = ({task, todoListId}: TaskWithReduxPropsType) => {
-    const dispatch:any = useDispatch();
+    const dispatch = useAppDispatch();
     const onTitleChangeHandler =  (newValue: string) => {
        dispatch(updateTaskTitleTC(task.id, newValue, todoListId))
     }

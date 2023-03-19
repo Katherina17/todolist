@@ -4,7 +4,7 @@ import {Todolist} from "../../components/TodoList/Todolist";
 import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../app/store";
+import {AppRootStateType, AppThunkDispatch, useAppDispatch} from "../../app/store";
 import {
     addTodoListsTC,
     changeFilterAC,
@@ -18,7 +18,7 @@ import {addTaskTC, changeTaskTitleAC} from "./tasks-reducer";
 
 export const TodoListLists = () => {
     let todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists);
-    const dispatch:any= useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(getTodoListsTC())
@@ -61,6 +61,7 @@ export const TodoListLists = () => {
                                 filter={tl.filter}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
+                                entityStatus={tl.entityStatus}
                             />
                         </Paper>
                     </Grid>
