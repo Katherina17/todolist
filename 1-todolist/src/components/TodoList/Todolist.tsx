@@ -3,7 +3,7 @@ import {FilterValuesType, TasksStateType} from '../../trash/App';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
-import {Delete} from "@mui/icons-material";
+import {Delete, Login} from "@mui/icons-material";
 import {Button} from "@mui/material";
 import {TaskWithRedux} from "./Task/TaskWithRedux";
 import {addTaskTC, getTasksTC, TaskStatuses} from "../../features/TodoListsList/tasks-reducer";
@@ -43,6 +43,7 @@ export const Todolist = memo((props: PropsType) => {
 
     const addTask = useCallback( (title: string) => {
         dispatch(addTaskTC(title, props.id))
+        dispatch((changeEntityStatusAC('loading',props.id)))
     }, [props.id])
 
     const removeTodolist = useCallback(() => {
@@ -56,7 +57,6 @@ export const Todolist = memo((props: PropsType) => {
     const onAllClickHandler = () => props.changeFilter("all", props.id);
     const onActiveClickHandler = () => props.changeFilter("active", props.id);
     const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
-
     return <div>
         <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
             <IconButtonDeleteMemo onClickHandler={removeTodolist} disabled={props.entityStatus === 'loading'}/>

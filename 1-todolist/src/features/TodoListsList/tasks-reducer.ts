@@ -1,8 +1,9 @@
-import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolists-reducer";
+import {addTodoListAC, changeEntityStatusAC, removeTodoListAC, setTodoListsAC} from "./todolists-reducer";
 import {Dispatch} from "redux";
 import {modelUpdateTask, taskAPI} from "../../api/task-api";
 import {AppRootStateType, AppThunk} from "../../app/store";
 import {setErrorAC, setStatusAC} from "../../app/appReducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 const initialState: TasksStateType = {};
 
@@ -101,43 +102,60 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
 }
 
 
-export const getTasksTC = (todolistId: string):AppThunk => (dispatch: Dispatch<commonTasksActionsType | setStatusAC>) => {
+export const getTasksTC = (todolistId: string): AppThunk => (dispatch: Dispatch<commonTasksActionsType | setStatusAC>) => {
     dispatch(setStatusAC('loading'))
     taskAPI.getTasks(todolistId).then(res => {
-        dispatch(setTasksAC(todolistId, res.data.items))
-        dispatch(setStatusAC('succeeded'))
+        if (!res.data.error) {
+            dispatch(setTasksAC(todolistId, res.data.items))
+            dispatch(setStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data.error, dispatch)
+        }
     })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
+        })
 }
 
 export const deleteTaskTC = (id: string, todoListId: string):AppThunk => (dispatch: Dispatch<commonTasksActionsType | setStatusAC>) => {
     dispatch(setStatusAC('loading'))
     taskAPI.deleteTask(todoListId, id).then(res => {
-        dispatch(removeTaskAC(id, todoListId))
-        dispatch(setStatusAC('succeeded'))
+        if(res.data.resultCode === 0){
+            dispatch(removeTaskAC(id, todoListId))
+            dispatch(setStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
     })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
+        })
 }
 
 
-export const addTaskTC = (title: string, todoListId: string):AppThunk => (dispatch: Dispatch<commonTasksActionsType
-    | setStatusAC | setErrorAC> ) => {
+export const addTaskTC = (title: string, todoListId: string): AppThunk => (dispatch) => {
     dispatch(setStatusAC('loading'))
     taskAPI.createTask(todoListId, title).then(res => {
-        if(res.data.resultCode === 0){
-            dispatch(addTaskAC(res.data.data.item))
-        } else {
-            if(res.data.messages.length){
-                dispatch(setErrorAC(res.data.messages[0]))
+            if (res.data.resultCode === 0) {
+                dispatch(addTaskAC(res.data.data.item))
+                dispatch((changeEntityStatusAC('idle', res.data.data.item.todoListId)))
             } else {
-                dispatch(setErrorAC('Title should be 100 symbols!'))
+                handleServerAppError(res.data, dispatch)
+                dispatch((changeEntityStatusAC('failed', todoListId)))
             }
+            dispatch(setStatusAC('idle'))
         }
-        dispatch(setStatusAC('idle'))
-    })
+    )
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
+            dispatch((changeEntityStatusAC('failed', todoListId)))
+        })
+    dispatch(setStatusAC('idle'))
 }
 
 
-export const updateTaskStatusTC = (id: string, status: TaskStatuses, todoListId: string):AppThunk => {
-    return (dispatch: Dispatch<commonTasksActionsType | setStatusAC>, getState: () => AppRootStateType) => {
+export const updateTaskStatusTC = (id: string, status: TaskStatuses, todoListId: string): AppThunk => {
+    return (dispatch, getState: () => AppRootStateType) => {
         dispatch(setStatusAC('loading'))
         let allTasks = getState().tasks;
         let tasksForCurrentTodolist = allTasks[todoListId];
@@ -153,19 +171,22 @@ export const updateTaskStatusTC = (id: string, status: TaskStatuses, todoListId:
                 completed: currentTask!.completed
             }
             taskAPI.updateTask(todoListId, id, updateModal).then(res => {
-                dispatch(changeTaskStatusAC(id, status, todoListId))
-                dispatch(setStatusAC('succeeded'))
+                if (res.data.resultCode === 0) {
+                    dispatch(changeTaskStatusAC(id, status, todoListId))
+                    dispatch(setStatusAC('succeeded'))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
             })
                 .catch(error => {
-                    
+                    handleServerNetworkError(error, dispatch)
                 })
         }
     }
 }
 
-export const updateTaskTitleTC = (id: string, title: string, todoListId: string):AppThunk => {
-
-    return (dispatch: Dispatch<commonTasksActionsType | setStatusAC>, getState: () => AppRootStateType) => {
+export const updateTaskTitleTC = (id: string, title: string, todoListId: string): AppThunk => {
+    return (dispatch, getState: () => AppRootStateType) => {
         dispatch(setStatusAC('loading'))
         let allTasks = getState().tasks;
         let tasksForCurrentTodolist = allTasks[todoListId];
@@ -181,12 +202,17 @@ export const updateTaskTitleTC = (id: string, title: string, todoListId: string)
                 completed: currentTask!.completed
             }
             taskAPI.updateTask(todoListId, id, updateModal).then(res => {
-                dispatch(changeTaskTitleAC(id, title, todoListId))
-                dispatch(setStatusAC('succeeded'))
+                if (res.data.resultCode === 0) {
+                    dispatch(changeTaskTitleAC(id, title, todoListId))
+                    dispatch(setStatusAC('succeeded'))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
             })
+                .catch(error => {
+                    handleServerNetworkError(error, dispatch)
+                })
         }
-
-
     }
 }
 

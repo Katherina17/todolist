@@ -45,7 +45,7 @@ export type modelUpdateTask = {
 
 }
 
-type ResponseType<T = TaskType> = {
+ type ResponseType<T = TaskType> = {
     fieldsErrors: string[]
     messages: string[]
     resultCode: number

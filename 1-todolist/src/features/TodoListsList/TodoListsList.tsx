@@ -6,7 +6,7 @@ import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType, AppThunkDispatch, useAppDispatch} from "../../app/store";
 import {
-    addTodoListsTC,
+    addTodoListsTC, changeEntityStatusAC,
     changeFilterAC,
     getTodoListsTC,
     TodolistType,
