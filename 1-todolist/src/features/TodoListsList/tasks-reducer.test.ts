@@ -1,5 +1,5 @@
 import {
-    addTaskAC,
+    addTaskAC, changeEntityTaskStatusAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC, TaskPriorities,
@@ -54,16 +54,16 @@ test('correct task should be deleted from correct array', () => {
 
 test('correct task should be added to correct array', () => {
     const action = addTaskAC({
-        addedDate: '', deadline: null, description: null, id: '1', order: 10, priority: TaskPriorities.Low,
+        addedDate: '', deadline: null, description: null, id: '3', order: 10, priority: TaskPriorities.Low,
         startDate: null, status: TaskStatuses.New, title: 'juice', todoListId: 'todolistId1', completed: true, entityStatus: 'idle'
     })
     const endState = tasksReducer(startState, action)
 
-    expect(endState['todolistId1'].length).toBe(2)
-    expect(endState['todolistId2'].length).toBe(2)
-    expect(endState['todolistId2'][0].id).toBeDefined()
-    expect(endState['todolistId2'][0].title).toBe('juice')
-    expect(endState['todolistId2'][0].status).toBe(0)
+    expect(endState['todolistId1'].length).toBe(3)
+    expect(endState['todolistId2'].length).toBe(1)
+    expect(endState['todolistId1'][0].id).toBeDefined()
+    expect(endState['todolistId1'][0].title).toBe('juice')
+    expect(endState['todolistId1'][0].status).toBe(0)
 })
 
 test('status of specified task should be changed', () => {
@@ -83,7 +83,7 @@ test('a title of specified task should be changed', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-    const action = addTodoListAC( {addedDate: '', id: 'tdolists1', order: 5, title: "What to learn"}, '32423')
+    const action = addTodoListAC( {addedDate: '', id: 'todolists11', order: 5, title: "What to learn"}, '32423')
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
@@ -95,4 +95,12 @@ test('new array should be added when new todolist is added', () => {
     expect(keys.length).toBe(3)
     expect(endState[newKey]).toEqual([])
 })
+
+test('entity status should be changed', () => {
+    const endState = tasksReducer(startState, changeEntityTaskStatusAC('todolistId1', 'loading', '2'));
+    expect(endState['todolistId1'][0].entityStatus).toBe('idle')
+    expect(endState['todolistId1'][1].entityStatus).toBe('loading')
+    expect(endState['todolistId2'][0].entityStatus).toBe('idle')
+
+});
 

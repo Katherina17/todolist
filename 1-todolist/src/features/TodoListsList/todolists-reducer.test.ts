@@ -1,7 +1,7 @@
 import {v1} from "uuid";
 import {FilterValuesType, ValidTodoListType} from "../../trash/App";
 import {
-    addTodoListAC,
+    addTodoListAC, changeEntityStatusAC,
     changeFilterAC,
     changeTodolistTitleAC,
     removeTodoListAC,
@@ -33,11 +33,9 @@ test('correct todolist should be removed', () => {
 });
 
 test('correct todolist should be added', () => {
-
-    const endState = TodoListReducer(startState, addTodoListAC( {addedDate: '', id: todolistId1, order: 5, title: "What to learn"}, '1todoList'))
-
+    const endState = TodoListReducer(startState, addTodoListAC( {addedDate: '', id: 'todolisst3', order: 5, title: "What to learn"}, 'todolist3'))
     expect(endState.length).toBe(3);
-    expect(endState[2].title).toBe(newTodolistTitle);
+    expect(endState[0].title).toBe('What to learn');
 });
 
 test('correct todolist should change its name', () => {
@@ -56,4 +54,10 @@ test('correct filter of todolist should be changed', () => {
 
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);
+});
+
+test('entity status should be changed', () => {
+    const endState = TodoListReducer(startState,  changeEntityStatusAC('loading',todolistId2));
+    expect(endState[0].entityStatus).toBe("idle");
+    expect(endState[1].entityStatus).toBe("loading");
 });
