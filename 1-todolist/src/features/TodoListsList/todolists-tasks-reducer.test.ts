@@ -25,21 +25,21 @@ test('property with todolistId should be deleted', () => {
         'todolistId1': [
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: 'todolistId1', completed: false
+                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: 'todolistId1', completed: false, entityStatus: 'idle'
             },
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: 'todolistId1', completed: true
+                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: 'todolistId1', completed: true, entityStatus: 'idle'
             },
         ],
         'todolistId2': [
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: 'todolistId2', completed: false
+                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: 'todolistId2', completed: false, entityStatus: 'idle'
             },
             {
                 addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: 'todolistId2', completed: true
+                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: 'todolistId2', completed: true, entityStatus: 'idle'
             },
         ],
     }

@@ -41,22 +41,62 @@ function App() {
     let [tasks, dispatchTasks] = useReducer(tasksReducer, {
         [todolistId1]: [
             {
-                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'HTML&CSS', todoListId: todolistId1, completed: false
+                addedDate: '',
+                deadline: null,
+                description: null,
+                id: v1(),
+                order: 10,
+                priority: TaskPriorities.Low,
+                startDate: null,
+                status: TaskStatuses.New,
+                title: 'HTML&CSS',
+                todoListId: todolistId1,
+                completed: false,
+                entityStatus: 'idle'
             },
             {
-                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'REACT', todoListId: todolistId1, completed: true
+                addedDate: '',
+                deadline: null,
+                description: null,
+                id: v1(),
+                order: 10,
+                priority: TaskPriorities.Low,
+                startDate: null,
+                status: TaskStatuses.New,
+                title: 'REACT',
+                todoListId: todolistId1,
+                completed: true,
+                entityStatus: 'idle'
             },
         ],
         [todolistId2]: [
             {
-                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Milk', todoListId: todolistId2, completed: false
+                addedDate: '',
+                deadline: null,
+                description: null,
+                id: v1(),
+                order: 10,
+                priority: TaskPriorities.Low,
+                startDate: null,
+                status: TaskStatuses.New,
+                title: 'Milk',
+                todoListId: todolistId2,
+                completed: false,
+                entityStatus: 'idle'
             },
             {
-                addedDate: '', deadline: null, description: null, id: v1(), order: 10, priority: TaskPriorities.Low,
-                startDate: null, status: TaskStatuses.New, title: 'Juice', todoListId: todolistId2, completed: true
+                addedDate: '',
+                deadline: null,
+                description: null,
+                id: v1(),
+                order: 10,
+                priority: TaskPriorities.Low,
+                startDate: null,
+                status: TaskStatuses.New,
+                title: 'Juice',
+                todoListId: todolistId2,
+                completed: true,
+                entityStatus: 'idle'
             },
         ],
 

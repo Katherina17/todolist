@@ -3,10 +3,10 @@ import {Grid, Paper} from "@mui/material";
 import {Todolist} from "../../components/TodoList/Todolist";
 import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType, AppThunkDispatch, useAppDispatch} from "../../app/store";
+import {useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "../../app/store";
 import {
-    addTodoListsTC, changeEntityStatusAC,
+    addTodoListsTC,
     changeFilterAC,
     getTodoListsTC,
     TodolistType,

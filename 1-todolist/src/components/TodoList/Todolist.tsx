@@ -58,7 +58,7 @@ export const Todolist = memo((props: PropsType) => {
     const onActiveClickHandler = () => props.changeFilter("active", props.id);
     const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
     return <div>
-        <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
+        <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} disabled={props.entityStatus === 'loading'}/>
             <IconButtonDeleteMemo onClickHandler={removeTodolist} disabled={props.entityStatus === 'loading'}/>
         </h3>
         <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>

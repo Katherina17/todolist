@@ -2,7 +2,6 @@ import {IconButtonDeleteMemo} from "../Todolist";
 import {Checkbox} from "@mui/material";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import React from "react";
-import {useDispatch} from "react-redux";
 import {deleteTaskTC,
     TaskStatuses,
     TaskType, updateTaskStatusTC, updateTaskTitleTC
@@ -12,6 +11,7 @@ import {useAppDispatch} from "../../../app/store";
 type TaskWithReduxPropsType = {
     task: TaskType,
     todoListId: string
+    disabled?: boolean
 }
 
 export const TaskWithRedux = ({task, todoListId}: TaskWithReduxPropsType) => {
@@ -26,10 +26,11 @@ export const TaskWithRedux = ({task, todoListId}: TaskWithReduxPropsType) => {
             <Checkbox
                 checked={task.status === TaskStatuses.Completed}
                 color="primary"
+                disabled={task.entityStatus === 'loading'}
                 onChange={() => dispatch(updateTaskStatusTC(task.id, task.status === TaskStatuses.Completed ? TaskStatuses.New : TaskStatuses.Completed, todoListId))}
             />
-            <EditableSpan value={task.title} onChange={onTitleChangeHandler}/>
-            <IconButtonDeleteMemo onClickHandler={onClickHandler}/>
+            <EditableSpan value={task.title} onChange={onTitleChangeHandler} disabled={task.entityStatus === 'loading'}/>
+            <IconButtonDeleteMemo onClickHandler={onClickHandler} disabled={task.entityStatus === 'loading'}/>
         </div>
     )
 }

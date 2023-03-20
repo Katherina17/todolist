@@ -24,9 +24,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                <div style={{marginTop: '64px', position:'absolute', top: '0', bottom: '0', right: '0', left: '0' }}>
                     {status === 'loading'  && <LinearProgress color="secondary" />}
-                </div>
             </AppBar>
             <Container fixed>
                 <TodoListLists/>

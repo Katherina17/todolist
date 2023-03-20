@@ -1,7 +1,7 @@
 import {FilterValuesType, ValidTodoListType} from "../../trash/App";
 import {todolistAPI, TodoListType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
-import {RequestStatusType, setErrorAC, setStatusAC} from "../../app/appReducer";
+import {RequestStatusType, setStatusAC} from "../../app/appReducer";
 import { AppThunk} from "../../app/store";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
@@ -142,13 +142,15 @@ export const updateTodoListTitleTC = (id: string, title: string): AppThunk => {
     return (dispatch: Dispatch<commonTodoListsActionsType | setStatusAC>) => {
         dispatch(setStatusAC('loading'))
         todolistAPI.updateTodolistTitle(id, title).then(res => {
-            if (ResulCode.OK === res.data.resultCode) {
-                dispatch(changeTodolistTitleAC(id, title))
-                dispatch(setStatusAC('succeeded'))
-            } else {
-                handleServerAppError(res.data, dispatch)
+                if (ResulCode.OK === res.data.resultCode) {
+                    dispatch(changeTodolistTitleAC(id, title))
+                    dispatch(setStatusAC('succeeded'))
+                    dispatch(changeEntityStatusAC('succeeded', id))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
             }
-        })
+        )
             .catch(error => {
                 handleServerNetworkError(error, dispatch)
             })
