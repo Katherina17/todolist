@@ -1,7 +1,7 @@
 import axios from "axios";
 import {TaskPriorities, TaskStatuses, TaskType} from "../features/TodoListsList/tasks-reducer";
 
-const instance = axios.create({
+export const instance = axios.create({
         baseURL: 'https://social-network.samuraijs.com/api/1.1/',
         withCredentials: true,
         /*headers: {
@@ -45,7 +45,7 @@ export type modelUpdateTask = {
 
 }
 
- type ResponseType<T = TaskType> = {
+type ResponseType<T = TaskType> = {
     fieldsErrors: string[]
     messages: string[]
     resultCode: number
