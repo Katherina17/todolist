@@ -42,7 +42,7 @@ function AppWithRedux() {
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
-                        {isLoggedIn? userLogin : 'Login'}
+                        {isLoggedIn && userLogin}
                     </Typography>
                     {isLoggedIn && <Button color="inherit" onClick={onClickLogOutHandler}>LogOut</Button>}
                 </Toolbar>

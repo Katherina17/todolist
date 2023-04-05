@@ -1,6 +1,6 @@
 
 import {modelUpdateTask, taskAPI} from "api/task-api";
-import {AppRootStateType, AppThunk} from "app/store";
+import {AppRootStateType, AppThunk, clearAction} from "app/store";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {todoListActions} from "features/TodoListsList/todolists-reducer";
@@ -47,8 +47,10 @@ const slice = createSlice({
             if(task){
                 task.entityStatus = action.payload.entityStatus
             }
+        },
+        cleanTasks: (state, action) => {
+            return state = {}
         }
-
 
     },
     extraReducers: builder => {

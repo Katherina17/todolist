@@ -74,18 +74,19 @@ export const Login = () => {
                     <FormGroup>
                         <TextField label="Email" margin="normal"
                                    {...formik.getFieldProps('email')}
-                            /* error={!!formik.errors.email}*/
+                             error={!!formik.errors.email && formik.touched.email}
                         />
                         <span style={errorStyle}>{formik.errors.email}</span>
                         <TextField type="password"
                                    label="Password"
                                    margin="normal"
-                            /*error={!!formik.errors.password}*/
+                                   error={!!formik.errors.password && formik.touched.password}
                                    {...formik.getFieldProps('password')}/>
                         <span style={errorStyle}>{formik.errors.password}</span>
                         <FormControlLabel label={'Remember me'}
-                                          control={<Checkbox checked={formik.values.rememberMe}/>}
-                                          {...formik.getFieldProps('rememberMe')}/>
+                                          control={<Checkbox checked={formik.values.rememberMe}
+                                                             {...formik.getFieldProps('rememberMe')}/>}
+                                          />
                         <Button type={'submit'} variant={'contained'} color={'primary'}
                                 disabled={!!formik.errors.email || !!formik.errors.password}>
                             Login

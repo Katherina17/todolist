@@ -12,7 +12,7 @@ const root = createRoot(container);
 root.render(
     <Provider store={store}>
         <BrowserRouter>
-            <AppWithRedux />
+            <AppWithRedux/>
         </BrowserRouter>
     </Provider>
 );

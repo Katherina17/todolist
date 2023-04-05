@@ -8,7 +8,7 @@ import  {
 import {appReducer} from "./appReducer";
 import {useDispatch} from "react-redux";
 import {authReducer} from "features/Login/auth-reducer";
-import {configureStore} from "@reduxjs/toolkit";
+import {configureStore, createAction} from "@reduxjs/toolkit";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -20,11 +20,12 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
+
 export const store = configureStore({
     reducer: rootReducer
 }) //we don't need to write applyMiddleware, done under the hood
 //if we need more than one middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)
-
+export const clearAction = createAction('clear');
 
 // непосредственно создаём store
 //export const _store = legacy_createStore(rootReducer, applyMiddleware(thunk)) //createSore -> old create store in REDUX

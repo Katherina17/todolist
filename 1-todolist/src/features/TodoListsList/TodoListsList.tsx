@@ -21,8 +21,6 @@ export const TodoListLists = () => {
         dispatch(getTodoListsTC())
     }, [])
 
-
-
     let todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists);
     const dispatch = useAppDispatch();
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)

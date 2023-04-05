@@ -1,11 +1,12 @@
 import {FilterValuesType, ValidTodoListType} from "trash/App";
 import {todolistAPI, TodoListType} from "api/todolist-api";
 import {appAction, RequestStatusType} from "app/appReducer";
-import { AppThunk} from "app/store";
+import {AppThunk, clearAction} from "app/store";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: ValidTodoListType[] = [];
+
 
 const slice = createSlice({
     name: 'todolists',
@@ -40,7 +41,9 @@ const slice = createSlice({
         setTodoLists: (state, action:PayloadAction<{todoLists: TodoListType[]}>) => {
             return action.payload.todoLists.map(td => ({...td, filter: 'all', entityStatus: 'idle'})) //foreacch
         },
-
+        cleanTodolists: (state, action) => {
+            return state = []
+        }
     },
 
 })
