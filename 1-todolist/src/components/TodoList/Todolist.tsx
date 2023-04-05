@@ -1,17 +1,16 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {FilterValuesType, TasksStateType} from '../../trash/App';
+import {FilterValuesType, TasksStateType} from 'trash/App';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
-import {Delete, Login} from "@mui/icons-material";
+import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
 import {TaskWithRedux} from "./Task/TaskWithRedux";
-import {addTaskTC, getTasksTC, TaskStatuses} from "../../features/TodoListsList/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../../app/store";
-import {changeEntityStatusAC, deleteTodoListsTC} from "../../features/TodoListsList/todolists-reducer";
-import {RequestStatusType} from "../../app/appReducer";
-import {AnyAction, Dispatch} from "redux";
+import {addTaskTC, getTasksTC, TaskStatuses} from "features/TodoListsList/tasks-reducer";
+import { useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "app/store";
+import { deleteTodoListsTC, todoListActions} from "features/TodoListsList/todolists-reducer";
+import {RequestStatusType} from "app/appReducer";
 
 
 
@@ -43,7 +42,7 @@ export const Todolist = memo((props: PropsType) => {
 
     const addTask = useCallback( (title: string) => {
         dispatch(addTaskTC(title, props.id))
-        dispatch((changeEntityStatusAC('loading',props.id)))
+        dispatch(todoListActions.changeEntityStatus({entityStatus: 'loading', id: props.id}))
     }, [props.id])
 
     const removeTodolist = useCallback(() => {

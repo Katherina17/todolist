@@ -3,14 +3,14 @@ import './App.css';
 import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {TodoListLists} from "../features/TodoListsList/TodoListsList";
+import {TodoListLists} from "features/TodoListsList/TodoListsList";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store";
 import {RequestStatusType} from "./appReducer";
-import {CustomizedSnackbars} from "../components/ErrorSnakbar/ErrorSnackbar";
-import {Login} from "../features/Login/Login";
+import {CustomizedSnackbars} from "components/ErrorSnakbar/ErrorSnackbar";
+import {Login} from "features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {initializeAppTC, logOutTC} from "../features/Login/auth-reducer";
+import {initializeAppTC, logOutTC} from "features/Login/auth-reducer";
 
 
 function AppWithRedux() {
@@ -42,7 +42,7 @@ function AppWithRedux() {
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
-                        {userLogin ? userLogin : 'Login'}
+                        {isLoggedIn? userLogin : 'Login'}
                     </Typography>
                     {isLoggedIn && <Button color="inherit" onClick={onClickLogOutHandler}>LogOut</Button>}
                 </Toolbar>

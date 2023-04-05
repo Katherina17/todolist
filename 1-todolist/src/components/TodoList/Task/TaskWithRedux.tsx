@@ -5,8 +5,8 @@ import React from "react";
 import {deleteTaskTC,
     TaskStatuses,
     TaskType, updateTaskStatusTC, updateTaskTitleTC
-} from "../../../features/TodoListsList/tasks-reducer";
-import {useAppDispatch} from "../../../app/store";
+} from "features/TodoListsList/tasks-reducer";
+import {useAppDispatch} from "app/store";
 
 type TaskWithReduxPropsType = {
     task: TaskType,
