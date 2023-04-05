@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {FilterValuesType, TasksStateType} from 'trash/App';
+import {FilterValuesType} from 'trash/App';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
@@ -8,9 +8,10 @@ import {Button} from "@mui/material";
 import {TaskWithRedux} from "./Task/TaskWithRedux";
 import {addTaskTC, getTasksTC, TaskStatuses} from "features/TodoListsList/tasks-reducer";
 import { useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "app/store";
+import {useAppDispatch} from "app/store";
 import { deleteTodoListsTC, todoListActions} from "features/TodoListsList/todolists-reducer";
 import {RequestStatusType} from "app/appReducer";
+import * as todolistSelectors from './todolistSelectors'
 
 
 
@@ -26,7 +27,7 @@ type PropsType = {
 }
 
 export const Todolist = memo((props: PropsType) => {
-    let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)[props.id];
+    let tasks = useSelector(todolistSelectors.tasks)[props.id];
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getTasksTC(props.id))
@@ -38,7 +39,6 @@ export const Todolist = memo((props: PropsType) => {
     if (props.filter === "completed") {
         tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
     }
-
 
     const addTask = useCallback( (title: string) => {
         dispatch(addTaskTC(title, props.id))

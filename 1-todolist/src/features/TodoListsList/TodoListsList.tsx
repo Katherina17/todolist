@@ -4,15 +4,16 @@ import {Todolist} from "components/TodoList/Todolist";
 import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "components/AddItemForm/AddItemForm";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "app/store";
+import {useAppDispatch} from "app/store";
 import {
     addTodoListsTC,
     getTodoListsTC, todoListActions,
-    TodolistType,
     updateTodoListTitleTC
 } from "./todolists-reducer";
 import {addTaskTC, tasksActions} from "./tasks-reducer";
 import {Navigate} from "react-router-dom";
+import * as authSelectors from '../Login/authSelectors'
+import * as todoListListsSelectors from './todoListsSelectors'
 
 
 
@@ -21,9 +22,9 @@ export const TodoListLists = () => {
         dispatch(getTodoListsTC())
     }, [])
 
-    let todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists);
+    let todolists = useSelector(todoListListsSelectors.todolists)
     const dispatch = useAppDispatch();
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector(authSelectors.isLoggedIn)
     const addTask = useCallback((title: string, todolistId: string) => {
         dispatch(addTaskTC(title, todolistId))
     }, [])

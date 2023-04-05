@@ -5,19 +5,21 @@ import {Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar
 import {Menu} from "@mui/icons-material";
 import {TodoListLists} from "features/TodoListsList/TodoListsList";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "./store";
-import {RequestStatusType} from "./appReducer";
+import {useAppDispatch} from "./store";
 import {CustomizedSnackbars} from "components/ErrorSnakbar/ErrorSnackbar";
 import {Login} from "features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {initializeAppTC, logOutTC} from "features/Login/auth-reducer";
+import * as appSelectors from './appSelectors'
+import * as authSelectors from '../features/Login/authSelectors'
 
 
 function AppWithRedux() {
-    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-    const userLogin = useSelector<AppRootStateType, string | null>(state => state.auth.user.login)
-    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    const status = useSelector(appSelectors.status);
+    const isLoggedIn = useSelector(authSelectors.isLoggedIn)
+    const isInitialized = useSelector(appSelectors.isInitialized)
+    const userLogin = useSelector(appSelectors.userLogin)
+
     const dispatch = useAppDispatch();
 
 
