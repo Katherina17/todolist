@@ -48,8 +48,8 @@ const slice = createSlice({
                 task.entityStatus = action.payload.entityStatus
             }
         },
-        cleanTasks: (state, action) => {
-            return state = {}
+        clearTasks: () => {
+            return {}
         }
 
     },
