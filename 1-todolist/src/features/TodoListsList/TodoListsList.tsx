@@ -10,7 +10,7 @@ import {
     getTodoListsTC, todoListActions,
     updateTodoListTitleTC
 } from "./todolists-reducer";
-import {addTaskTC, tasksActions} from "./tasks-reducer";
+import {tasksActions, tasksThunks} from "./tasks-reducer";
 import {Navigate} from "react-router-dom";
 import * as authSelectors from '../Login/authSelectors'
 import * as todoListListsSelectors from './todoListsSelectors'
@@ -26,11 +26,11 @@ export const TodoListLists = () => {
     const dispatch = useAppDispatch();
     const isLoggedIn = useSelector(authSelectors.isLoggedIn)
     const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(addTaskTC(title, todolistId))
+        dispatch(tasksThunks.addTask({todolistId: todolistId, title: title}))
     }, [])
 
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        dispatch(tasksActions.changeTaskTitle({id, newTitle, todolistId}))
+        dispatch(tasksThunks.updateTaskTitle({id:id, title: newTitle, todoListId: todolistId}))
     }, [])
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {

@@ -1,7 +1,7 @@
 import {
     TaskPriorities, tasksActions,
     tasksReducer,
-    TaskStatuses
+    TaskStatuses, tasksThunks, TaskType
 } from './tasks-reducer'
 import {TasksStateType} from 'trash/App'
 import {todoListActions} from "features/TodoListsList/todolists-reducer";
@@ -30,7 +30,7 @@ beforeEach(() => {
 
 
 test('correct task should be deleted from correct array', () => {
-    const action = tasksActions.removeTask({id: '2', todoListId: 'todolistId1'})
+    const action = tasksThunks.deleteTask.fulfilled({id: '2', todoListId: 'todolistId1'}, 'requestedId',{id: '2', todoListId: 'todolistId1'} )
     const endState = tasksReducer(startState, action)
     expect(endState).toEqual({
         'todolistId1': [
@@ -49,10 +49,12 @@ test('correct task should be deleted from correct array', () => {
 })
 
 test('correct task should be added to correct array', () => {
-    const action = tasksActions.addTask({task :{
+
+    const task: TaskType = {
         addedDate: '', deadline: null, description: null, id: '3', order: 10, priority: TaskPriorities.Low,
         startDate: null, status: TaskStatuses.New, title: 'juice', todoListId: 'todolistId1', completed: true, entityStatus: 'idle'
-    }})
+    }
+    const action = tasksThunks.addTask.fulfilled({task}, 'requestedId', {title: task.title, todolistId: task.todoListId})
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId1'].length).toBe(3)
@@ -63,7 +65,7 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const action = tasksActions.changeTaskStatus({id: '1', status:2, todoListId: 'todolistId2'})
+    const action = tasksThunks.updateTaskStatus.fulfilled( {id: '1', status:2, todoListId: 'todolistId2'},'requestedId', {id: '1', status:2, todoListId: 'todolistId2'})
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][0].status).toBe(2)
@@ -71,7 +73,7 @@ test('status of specified task should be changed', () => {
 })
 
 test('a title of specified task should be changed', () => {
-    const action = tasksActions.changeTaskTitle({id: '1', newTitle: 'HTML', todolistId: 'todolistId1'})
+    const action = tasksThunks.updateTaskTitle.fulfilled({id: '1', newTitle: 'HTML', todoListId: 'todolistId1'}, 'requestedId', {id: '1', title: 'HTML&CSS', todoListId: 'todolistId1'})
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId1'][0].title).toBe('HTML')

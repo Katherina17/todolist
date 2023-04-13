@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
 import {TaskWithRedux} from "./Task/TaskWithRedux";
-import {addTaskTC, getTasksTC, TaskStatuses} from "features/TodoListsList/tasks-reducer";
+import {TaskStatuses, tasksThunks} from "features/TodoListsList/tasks-reducer";
 import { useSelector} from "react-redux";
 import {useAppDispatch} from "app/store";
 import { deleteTodoListsTC, todoListActions} from "features/TodoListsList/todolists-reducer";
@@ -30,7 +30,7 @@ export const Todolist = memo((props: PropsType) => {
     let tasks = useSelector(todolistSelectors.tasks)[props.id];
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(getTasksTC(props.id))
+        dispatch(tasksThunks.getTasks(props.id))
     }, [])
 
     if (props.filter === "active") {
@@ -41,7 +41,7 @@ export const Todolist = memo((props: PropsType) => {
     }
 
     const addTask = useCallback( (title: string) => {
-        dispatch(addTaskTC(title, props.id))
+        dispatch(tasksThunks.addTask({todolistId: props.id, title: title}))
         dispatch(todoListActions.changeEntityStatus({entityStatus: 'loading', id: props.id}))
     }, [props.id])
 
