@@ -1,9 +1,10 @@
 import {modelUpdateTask, taskAPI} from "api/task-api";
 import {appAction, RequestStatusType} from "app/appReducer";
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {ResulCode, todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "utils/create-app-async-thunk";
+import {handleServerNetworkError} from "utils/handle-server-network-error";
+import {handleServerAppError} from "utils/handle-server-app-error";
 
 const initialState: TasksStateType = {};
 

@@ -1,10 +1,11 @@
-import {AppThunk, clearAction} from "app/store";
+import {AppThunk} from "app/store";
 import {authAPI, LoginParamsType} from "api/auth-api";
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
 import {todoListActions} from "features/TodoListsList/todolists-reducer";
 import {tasksActions} from "features/TodoListsList/tasks-reducer";
+import {handleServerNetworkError} from "utils/handle-server-network-error";
+import {handleServerAppError} from "utils/handle-server-app-error";
 
 const userInfo:userInfoType = {
     id: null,
