@@ -5,13 +5,13 @@ import {Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar
 import {Menu} from "@mui/icons-material";
 import {TodoListLists} from "features/TodoListsList/TodoListsList";
 import {useSelector} from "react-redux";
-import {useAppDispatch} from "./store";
-import {CustomizedSnackbars} from "components/ErrorSnakbar/ErrorSnackbar";
+import {CustomizedSnackbars} from "common/components/ErrorSnakbar/ErrorSnackbar";
 import {Login} from "features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {initializeAppTC, logOutTC} from "features/Login/auth-reducer";
 import * as appSelectors from './appSelectors'
 import * as authSelectors from '../features/Login/authSelectors'
+import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {authThunks} from "features/Login/auth-reducer";
 
 
 function AppWithRedux() {
@@ -24,13 +24,14 @@ function AppWithRedux() {
 
 
     const onClickLogOutHandler = () => {
-        dispatch(logOutTC())
+        dispatch(authThunks.logOut())
     }
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(authThunks.initializeApp())
     }, [])
 
     if (!isInitialized) {
+        console.log('he')
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <CircularProgress/>
@@ -46,7 +47,7 @@ function AppWithRedux() {
                     <Typography variant="h6">
                         {isLoggedIn && userLogin}
                     </Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={onClickLogOutHandler}>LogOut</Button>}
+                    {isLoggedIn && <Button color="inherit" onClick={onClickLogOutHandler} disabled={status === 'loading'}>LogOut</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress color="secondary"/>}
             </AppBar>

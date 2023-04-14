@@ -1,10 +1,11 @@
 import {
-    TaskPriorities, tasksActions,
+    tasksActions,
     tasksReducer,
-    TaskStatuses, tasksThunks, TaskType
+    tasksThunks, TaskType
 } from './tasks-reducer'
 import {TasksStateType} from 'trash/App'
 import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
+import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 
 let startState: TasksStateType = {}
 

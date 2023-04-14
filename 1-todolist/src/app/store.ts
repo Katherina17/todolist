@@ -6,7 +6,6 @@ import  {
     ThunkDispatch
 } from "redux-thunk";
 import {appReducer} from "./appReducer";
-import {useDispatch} from "react-redux";
 import {authReducer} from "features/Login/auth-reducer";
 import {configureStore, createAction} from "@reduxjs/toolkit";
 
@@ -35,7 +34,6 @@ export type AppStateType = ReturnType<typeof store.getState>
 //export type commonAppActionType = commonTasksActionsType;
 export type AppThunkDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,AppStateType, unknown, AnyAction>
-export const useAppDispatch = () => useDispatch<AppThunkDispatch>();
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
 window.store = store

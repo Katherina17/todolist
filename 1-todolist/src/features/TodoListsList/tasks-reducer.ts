@@ -1,10 +1,11 @@
-import {modelUpdateTask, taskAPI} from "api/task-api";
+import {modelUpdateTask, taskAPI} from "common/api/task-api";
 import {appAction, RequestStatusType} from "app/appReducer";
-import {ResulCode, todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
+import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {createAppAsyncThunk} from "utils/create-app-async-thunk";
-import {handleServerNetworkError} from "utils/handle-server-network-error";
-import {handleServerAppError} from "utils/handle-server-app-error";
+import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
+import {handleServerAppError, handleServerNetworkError} from "common/utils";
+import {ResulCode, TaskPriorities, TaskStatuses} from "common/enums/common.enums";
+
 
 const initialState: TasksStateType = {};
 
@@ -260,20 +261,7 @@ export const tasksReducer = slice.reducer
 export const tasksActions = slice.actions
 export const tasksThunks = {getTasks, addTask, updateTaskStatus, updateTaskTitle, deleteTask}
 
-export enum TaskStatuses {
-    New = 0,
-    InProgress = 1,
-    Completed = 2,
-    Draft = 3
-}
 
-export enum TaskPriorities {
-    Low= 0,
-    Middle = 1,
-    Hi = 2,
-    Urgently = 3,
-    Later = 4
-}
 
 
 

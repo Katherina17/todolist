@@ -1,17 +1,18 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {FilterValuesType} from 'trash/App';
-import {AddItemForm} from '../AddItemForm/AddItemForm';
-import {EditableSpan} from '../EditableSpan/EditableSpan';
+import {EditableSpan} from 'common/components/EditableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
-import {TaskWithRedux} from "./Task/TaskWithRedux";
-import {TaskStatuses, tasksThunks} from "features/TodoListsList/tasks-reducer";
+import {Task} from "common/components/TodoList/Task/Task";
+import {tasksThunks} from "features/TodoListsList/tasks-reducer";
 import { useSelector} from "react-redux";
-import {useAppDispatch} from "app/store";
 import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {RequestStatusType} from "app/appReducer";
-import * as todolistSelectors from './todolistSelectors'
+import * as todolistSelectors from 'common/components/TodoList/todolistSelectors'
+import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {AddItemForm} from "common/components/AddItemForm/AddItemForm";
+import {TaskStatuses} from "common/enums/common.enums";
 
 
 
@@ -64,7 +65,7 @@ export const Todolist = memo((props: PropsType) => {
         <div>
             {
                 tasks.length !== 0 ? tasks.map(t => {
-                    return <TaskWithRedux key={t.id} task={t} todoListId={props.id}/>
+                    return <Task key={t.id} task={t} todoListId={props.id}/>
                 }) : <p> sorry, no tasks </p>
             }
 

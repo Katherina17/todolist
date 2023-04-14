@@ -1,12 +1,12 @@
-import {IconButtonDeleteMemo} from "../Todolist";
+import {IconButtonDeleteMemo} from "common/components/TodoList/Todolist";
 import {Checkbox} from "@mui/material";
-import {EditableSpan} from "../../EditableSpan/EditableSpan";
+import {EditableSpan} from "common/components/EditableSpan/EditableSpan";
 import React from "react";
-import {
-    TaskStatuses, tasksThunks,
+import {tasksThunks,
     TaskType,
 } from "features/TodoListsList/tasks-reducer";
-import {useAppDispatch} from "app/store";
+import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {TaskStatuses} from "common/enums/common.enums";
 
 type TaskWithReduxPropsType = {
     task: TaskType,
@@ -14,7 +14,7 @@ type TaskWithReduxPropsType = {
     disabled?: boolean
 }
 
-export const TaskWithRedux = ({task, todoListId}: TaskWithReduxPropsType) => {
+export const Task = ({task, todoListId}: TaskWithReduxPropsType) => {
     const dispatch = useAppDispatch();
     const onTitleChangeHandler =  (newValue: string) => {
        dispatch(tasksThunks.updateTaskTitle({id: task.id, title: newValue, todoListId: todoListId}))

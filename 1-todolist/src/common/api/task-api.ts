@@ -1,5 +1,6 @@
 import axios from "axios";
-import {TaskPriorities, TaskStatuses, TaskType} from "../features/TodoListsList/tasks-reducer";
+import {TaskType} from "features/TodoListsList/tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 
 export const instance = axios.create({
         baseURL: 'https://social-network.samuraijs.com/api/1.1/',

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -8,11 +8,11 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
-import { useAppDispatch} from "app/store";
-import {loginTC} from "./auth-reducer";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 import * as authSelectors from './authSelectors'
+import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {authThunks} from "features/Login/auth-reducer";
 
 type errorsFormType = {
     email?: string
@@ -45,7 +45,7 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            dispatch(loginTC({...values}))
+            dispatch(authThunks.login({...values}))
         },
     })
 

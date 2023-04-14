@@ -1,10 +1,11 @@
 import {FilterValuesType, ValidTodoListType} from "trash/App";
-import {todolistAPI, TodoListType} from "api/todolist-api";
+import {todolistAPI, TodoListType} from "common/api/todolist-api";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {createAppAsyncThunk} from "utils/create-app-async-thunk";
-import {handleServerAppError} from "utils/handle-server-app-error";
-import {handleServerNetworkError} from "utils/handle-server-network-error";
+import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
+import {handleServerAppError, handleServerNetworkError} from "common/utils";
+import {ResulCode} from "common/enums/common.enums";
+
 
 const initialState: ValidTodoListType[] = [];
 
@@ -161,11 +162,7 @@ export const TodoListReducer = slice.reducer;
 export const todoListActions = slice.actions;
 export const todoListThunks = {getTodoLists, deleteTodoList, addTodoList, updateTodoListTitle}
 
-export const ResulCode =  {
-    OK: 0,
-    Error: 1,
-    Captcha: 10
-} as const // для читаемости, также называются magicNumber
+
 
 
 const top10 = 'top10'

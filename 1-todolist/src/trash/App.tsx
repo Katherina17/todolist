@@ -1,18 +1,17 @@
 import React, {useReducer, useState} from 'react';
 import '../app/App.css';
-import { Todolist} from '../components/TodoList/Todolist';
+import { Todolist} from '../common/components/TodoList/Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from '../components/AddItemForm/AddItemForm';
+import {AddItemForm} from '../common/components/AddItemForm/AddItemForm';
 import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    TaskPriorities,
     tasksReducer,
-    TaskStatuses,
     TaskType} from "../features/TodoListsList/tasks-reducer";
-import {TodoListType} from "../api/todolist-api";
+import {TodoListType} from "../common/api/todolist-api";
 import {RequestStatusType} from "../app/appReducer";
+import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 
 
 

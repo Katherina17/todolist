@@ -1,15 +1,14 @@
 import {FilterValuesType} from "trash/App";
 import {Grid, Paper} from "@mui/material";
-import {Todolist} from "components/TodoList/Todolist";
 import React, {useCallback, useEffect} from "react";
-import {AddItemForm} from "components/AddItemForm/AddItemForm";
 import {useSelector} from "react-redux";
-import {useAppDispatch} from "app/store";
 import {todoListActions, todoListThunks} from "./todolists-reducer";
 import {tasksThunks} from "./tasks-reducer";
 import {Navigate} from "react-router-dom";
 import * as authSelectors from '../Login/authSelectors'
 import * as todoListListsSelectors from './todoListsSelectors'
+import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {AddItemForm, Todolist} from "common/components";
 
 
 

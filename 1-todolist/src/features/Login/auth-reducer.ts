@@ -1,11 +1,11 @@
-import {AppThunk} from "app/store";
-import {authAPI, LoginParamsType} from "api/auth-api";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {authAPI, LoginParamsType} from "common/api/auth-api";
+import {createSlice} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
 import {todoListActions} from "features/TodoListsList/todolists-reducer";
 import {tasksActions} from "features/TodoListsList/tasks-reducer";
-import {handleServerNetworkError} from "utils/handle-server-network-error";
-import {handleServerAppError} from "utils/handle-server-app-error";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
+import {ResulCode} from "common/enums/common.enums";
+
 
 const userInfo:userInfoType = {
     id: null,
@@ -23,23 +23,113 @@ const initialState = {
     user: userInfo
 }
 
+const login = createAppAsyncThunk<{isLoggedIn: boolean}, LoginParamsType>('auth/login', async (arg, thunkAPI) => {
+    const{dispatch, rejectWithValue} = thunkAPI;
+    dispatch(appAction.setStatus({status: 'loading'}))
+    try{
+        let data = await authAPI.getUserLoginForm({email: arg.email, rememberMe: arg.rememberMe, password: arg.password, captcha: arg.captcha})
+        if(data.data.resultCode === ResulCode.OK){
+            dispatch(authThunks.initializeApp())
+            return {isLoggedIn: true}
+        } else {
+            handleServerAppError(data.data, dispatch)
+            return rejectWithValue(null)
+        }
+    }
+    catch (e) {
+        handleServerNetworkError(e, dispatch)
+        return rejectWithValue(null)
+    }
+    finally {
+        dispatch(appAction.setStatus({status: 'idle'}))
+    }
+})
+
+type LogOutReturnType = {
+    isLoggedIn: boolean,
+}
+
+const logOut = createAppAsyncThunk<LogOutReturnType, void>('auth/logOut', async (arg, thunkAPI) => {
+    const{dispatch, rejectWithValue} = thunkAPI;
+    dispatch(appAction.setStatus({status: 'loading'}))
+    try{
+       const res = await authAPI.logOutUser()
+            if (res.data.resultCode === ResulCode.OK) {
+                dispatch(todoListActions.clearTodolists())
+                dispatch(tasksActions.clearTasks())
+                return {isLoggedIn: false}
+            } else {
+                handleServerAppError(res.data, dispatch)
+                return rejectWithValue(null)
+            }
+    }
+    catch (e) {
+        handleServerNetworkError(e, dispatch)
+        return rejectWithValue(null)
+    }
+    finally {
+        dispatch(appAction.setStatus({status: 'idle'}))
+    }
+})
+
+type initializeAppReturnType = {
+    id: number,
+    login: string,
+    email: string
+    isLoggedIn: boolean
+}
+
+const initializeApp = createAppAsyncThunk<initializeAppReturnType, void>('auth/initializeApp', async (arg, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI;
+    try {
+        const res = await authAPI.isAuthUser()
+        if (res.data.resultCode === ResulCode.OK) {
+            return {id: res.data.data.id, login: res.data.data.login, email: res.data.data.email, isLoggedIn: true}
+        } else {
+            handleServerAppError(res.data, dispatch)
+            return rejectWithValue(null)
+        }
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+        return rejectWithValue(null)
+    } finally {
+        dispatch(appAction.setInitialize({isInitialize: true}))
+    }
+})
+
+
 
 const slice = createSlice({
     name: 'auth', //slice name
     initialState, //initial
     reducers: {
-        setIsLoggedIn: (state, action: PayloadAction<{isLoggedIn: boolean}>) => {
+      /*  setIsLoggedIn: (state, action: PayloadAction<{isLoggedIn: boolean}>) => {
             state.isLoggedIn = action.payload.isLoggedIn
-        },
-        setUserInfo: (state, action:PayloadAction<{id: number | null, login: string | null, email: string | null}>) => {
+        }*/
+        /*setUserInfo: (state, action:PayloadAction<{id: number | null, login: string | null, email: string | null}>) => {
             state.user = action.payload
-        }
+        }*/
     },
+    extraReducers: builder => {
+        builder
+            .addCase(authThunks.login.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn
+            })
+            .addCase(authThunks.logOut.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn
+                state.user = {email: null, id: null, login: null}
+            })
+            .addCase(authThunks.initializeApp.fulfilled, (state, action) => {
+                state.user = {email: action.payload.email, login: action.payload.login, id: action.payload.id}
+                state.isLoggedIn = action.payload.isLoggedIn
+            })
+    }
 
 })
 
 export const authReducer = slice.reducer
 export const authActions = slice.actions
+export const authThunks = {login, logOut, initializeApp}
 
 
 type InitialStateType = typeof initialState
@@ -47,26 +137,9 @@ type InitialStateType = typeof initialState
 
 
 // thunks
-export const loginTC = (formikLoginParams: LoginParamsType): AppThunk => async (dispatch) => {
-    dispatch(appAction.setStatus({status: 'loading'}))
-    try {
-        const data = await authAPI.getUserLoginForm(formikLoginParams)
-        if(data.data.resultCode === 0){
-            dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
-            dispatch(initializeAppTC())
-        } else {
-            handleServerAppError(data.data, dispatch)
-        }
-    }
-    catch (e: any){
-       handleServerNetworkError(e.message, dispatch)
-    }
-    finally {
-        dispatch(appAction.setStatus({status: 'idle'}))
-    }
-}
 
 
+/*
 export const initializeAppTC = (): AppThunk => (dispatch) => {
     dispatch(appAction.setStatus({status: 'loading'}))
     authAPI.isAuthUser().then(res => {
@@ -83,10 +156,11 @@ export const initializeAppTC = (): AppThunk => (dispatch) => {
             dispatch(appAction.setInitialize({isInitialize: true}))
         })
 }
+*/
 
 
 
-export const logOutTC = (): AppThunk => (dispatch) => {
+/*export const logOutTC = (): AppThunk => (dispatch) => {
     dispatch(appAction.setStatus({status: 'loading'}))
     authAPI.logOutUser().then(res => {
         if (res.data.resultCode === 0) {
@@ -100,4 +174,4 @@ export const logOutTC = (): AppThunk => (dispatch) => {
     })
         .catch(error => handleServerNetworkError(error.message, dispatch))
         .finally(() => dispatch(appAction.setStatus({status: 'idle'})))
-}
+}*/
