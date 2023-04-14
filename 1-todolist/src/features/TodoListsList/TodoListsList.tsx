@@ -5,12 +5,8 @@ import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "components/AddItemForm/AddItemForm";
 import {useSelector} from "react-redux";
 import {useAppDispatch} from "app/store";
-import {
-    addTodoListsTC,
-    getTodoListsTC, todoListActions,
-    updateTodoListTitleTC
-} from "./todolists-reducer";
-import {tasksActions, tasksThunks} from "./tasks-reducer";
+import {todoListActions, todoListThunks} from "./todolists-reducer";
+import {tasksThunks} from "./tasks-reducer";
 import {Navigate} from "react-router-dom";
 import * as authSelectors from '../Login/authSelectors'
 import * as todoListListsSelectors from './todoListsSelectors'
@@ -19,7 +15,7 @@ import * as todoListListsSelectors from './todoListsSelectors'
 
 export const TodoListLists = () => {
     useEffect(() => {
-        dispatch(getTodoListsTC())
+        dispatch(todoListThunks.getTodoLists())
     }, [])
 
     let todolists = useSelector(todoListListsSelectors.todolists)
@@ -38,11 +34,11 @@ export const TodoListLists = () => {
     }, [])
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
-        dispatch(updateTodoListTitleTC(id, title))
+        dispatch(todoListThunks.updateTodoListTitle({id: id, title: title}))
     }, [])
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodoListsTC(title));
+        dispatch(todoListThunks.addTodoList({title: title}));
     }, [])
     if(!isLoggedIn){
         return <Navigate to={'/login'}/>

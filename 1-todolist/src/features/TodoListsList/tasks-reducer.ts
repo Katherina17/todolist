@@ -1,7 +1,7 @@
 import {modelUpdateTask, taskAPI} from "api/task-api";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
-import {todoListActions} from "features/TodoListsList/todolists-reducer";
+import {ResulCode, todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "utils/create-app-async-thunk";
 
@@ -34,7 +34,7 @@ const addTask = createAppAsyncThunk<{ task: TaskType }, {todolistId: string, tit
             let res = await taskAPI.createTask(args.todolistId, args.title)
             dispatch(todoListActions.changeEntityStatus({entityStatus: 'idle', id: res.data.data.item.todoListId}))
 
-            if(res.data.resultCode === 0){
+            if(res.data.resultCode === ResulCode.OK){
                 let task = res.data.data.item
                 return {task}
             } else {
@@ -78,7 +78,7 @@ const updateTaskStatus = createAppAsyncThunk<updateTaskStatus, updateTaskStatus>
                 completed: currentTask!.completed
             }
             const res = await taskAPI.updateTask(arg.todoListId, arg.id, updateModal)
-                if (res.data.resultCode === 0) {
+                if (res.data.resultCode === ResulCode.OK) {
                    return {status: arg.status, todoListId: arg.todoListId, id: arg.id}
                 } else {
                     handleServerAppError(res.data, dispatch)
@@ -136,7 +136,7 @@ const updateTaskTitle = createAppAsyncThunk<UpdateNewTaskTitle, UpdateTaskTitle>
                 completed: currentTask!.completed
             }
             const res = await taskAPI.updateTask(arg.todoListId, arg.id, updateModal)
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === ResulCode.OK) {
               return {id: arg.id, newTitle: arg.title, todoListId: arg.todoListId,}
             } else {
                 handleServerAppError(res.data, dispatch)
@@ -174,7 +174,7 @@ const deleteTask = createAppAsyncThunk<DeleteTask, DeleteTask>('tasks/deleteTask
     dispatch(tasksActions.changeEntityTaskStatus({todolistId: arg.todoListId, entityStatus: 'loading', id: arg.id}))
     try {
         const res = await taskAPI.deleteTask(arg.todoListId, arg.id)
-            if(res.data.resultCode === 0){
+            if(res.data.resultCode === ResulCode.OK){
                 dispatch(tasksActions.changeEntityTaskStatus({todolistId: arg.todoListId, entityStatus: 'succeeded', id: arg.id}))
                 return {id: arg.id, todoListId: arg.todoListId}
             } else {
@@ -215,14 +215,14 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(todoListActions.addTodoList, (state, action) => {
+            .addCase(todoListThunks.addTodoList.fulfilled, (state, action) => {
                 state[action.payload.newTodolistId] = []
             })
-            .addCase(todoListActions.removeTodo, (state, action) => {
+            .addCase(todoListThunks.deleteTodoList.fulfilled, (state, action) => {
                 delete state[action.payload.id]
             })
-            .addCase(todoListActions.setTodoLists, (state, action) => {
-                action.payload.todoLists.forEach(el => {
+            .addCase(todoListThunks.getTodoLists.fulfilled, (state, action) => {
+                action.payload.forEach(el => {
                     state[el.id] = []
                 })
             })
@@ -267,12 +267,14 @@ export enum TaskStatuses {
 }
 
 export enum TaskPriorities {
-    Low = 0,
+    Low= 0,
     Middle = 1,
     Hi = 2,
     Urgently = 3,
     Later = 4
 }
+
+
 
 export type TaskType = {
     addedDate: string

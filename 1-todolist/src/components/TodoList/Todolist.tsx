@@ -9,7 +9,7 @@ import {TaskWithRedux} from "./Task/TaskWithRedux";
 import {TaskStatuses, tasksThunks} from "features/TodoListsList/tasks-reducer";
 import { useSelector} from "react-redux";
 import {useAppDispatch} from "app/store";
-import { deleteTodoListsTC, todoListActions} from "features/TodoListsList/todolists-reducer";
+import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {RequestStatusType} from "app/appReducer";
 import * as todolistSelectors from './todolistSelectors'
 
@@ -46,7 +46,7 @@ export const Todolist = memo((props: PropsType) => {
     }, [props.id])
 
     const removeTodolist = useCallback(() => {
-        dispatch(deleteTodoListsTC(props.id))
+        dispatch(todoListThunks.deleteTodoList({id: props.id}))
     }, [props.id])
 
     const changeTodolistTitle = useCallback((title: string) => {

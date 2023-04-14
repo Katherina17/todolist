@@ -4,7 +4,7 @@ import {
     TaskStatuses, tasksThunks, TaskType
 } from './tasks-reducer'
 import {TasksStateType} from 'trash/App'
-import {todoListActions} from "features/TodoListsList/todolists-reducer";
+import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 
 let startState: TasksStateType = {}
 
@@ -81,8 +81,8 @@ test('a title of specified task should be changed', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-    const action = todoListActions.addTodoList({newTodolistId: '32423',
-        todoList: {addedDate: '', id: 'todolists11', order: 5, title: "What to learn"}})
+    const action = todoListThunks.addTodoList.fulfilled({newTodolistId: '32423',
+        todoList: {addedDate: '', id: 'todolists11', order: 5, title: "What to learn"}}, 'requestedId', {title: 'What to learn'})
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
