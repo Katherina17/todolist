@@ -1,4 +1,4 @@
-import {IconButtonDeleteMemo} from "common/components/TodoList/Todolist";
+import {IconButtonDeleteMemo} from "features/TodoListsList/TodoList/Todolist";
 import {Checkbox} from "@mui/material";
 import {EditableSpan} from "common/components/EditableSpan/EditableSpan";
 import React from "react";

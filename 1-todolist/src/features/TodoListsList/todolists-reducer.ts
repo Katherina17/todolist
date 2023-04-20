@@ -1,10 +1,10 @@
-import {FilterValuesType, ValidTodoListType} from "trash/App";
-import {todolistAPI, TodoListType} from "common/api/todolist-api";
+import {todolistAPI, TodoListType} from "features/TodoListsList/todolist-api";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {handleServerAppError, handleServerNetworkError} from "common/utils";
-import {ResulCode} from "common/enums/common.enums";
+import {FilterValuesType, ValidTodoListType} from "common/api/common.api";
+import {ResulCode} from "common/enums";
 
 
 const initialState: ValidTodoListType[] = [];

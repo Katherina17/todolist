@@ -1,4 +1,3 @@
-import {FilterValuesType} from "trash/App";
 import {Grid, Paper} from "@mui/material";
 import React, {useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
@@ -9,6 +8,7 @@ import * as authSelectors from '../Login/authSelectors'
 import * as todoListListsSelectors from './todoListsSelectors'
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {AddItemForm, Todolist} from "common/components";
+import {FilterValuesType} from "common/api/common.api";
 
 
 

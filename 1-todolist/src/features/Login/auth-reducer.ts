@@ -1,4 +1,4 @@
-import {authAPI, LoginParamsType} from "common/api/auth-api";
+import {authAPI, LoginParamsType} from "features/Login/auth-api";
 import {createSlice} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
 import {todoListActions} from "features/TodoListsList/todolists-reducer";

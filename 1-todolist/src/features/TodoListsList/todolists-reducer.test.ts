@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {FilterValuesType, ValidTodoListType} from "trash/App";
 import {todoListActions, TodoListReducer, todoListThunks} from "./todolists-reducer";
+import {FilterValuesType, ValidTodoListType} from "common/api/common.api";
 
 let todolistId1:string;
 let todolistId2:string;

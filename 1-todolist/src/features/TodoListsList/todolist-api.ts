@@ -1,13 +1,6 @@
-import axios from "axios";
+import {ResponseType} from "common/types/common.types";
+import {instance} from "common/api/common.api";
 
-const instance = axios.create({
-        baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-        withCredentials: true,
-        /*headers: {
-            // Не забываем заменить API-KEY на собственный
-            'API-KEY': '43a60f90-0234-478e-9be6-fcfce5403846',
-        },*/
-    })
 
 export const todolistAPI = {
     getTodoList(){
@@ -34,12 +27,7 @@ export type TodoListType = {
     title: string
 }
 
-export type ResponseType<T = {}> = {
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-    data: T
-}
+
 
 
 

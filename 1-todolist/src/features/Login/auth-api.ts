@@ -1,5 +1,5 @@
-import {instance} from "common/api/task-api";
-import {ResponseType} from "common/api/todolist-api";
+import {ResponseType} from "common/types/common.types";
+import {instance} from "common/api/common.api";
 
 
 export type LoginParamsType = {

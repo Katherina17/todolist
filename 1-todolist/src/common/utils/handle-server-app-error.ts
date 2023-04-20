@@ -1,6 +1,6 @@
-import {ResponseType} from "common/api/todolist-api";
 import {Dispatch} from "redux";
 import {appAction} from "app/appReducer";
+import {ResponseType} from "common/types/common.types";
 
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: Dispatch) => {
     if (data.messages.length) {

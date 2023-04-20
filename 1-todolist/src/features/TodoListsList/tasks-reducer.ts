@@ -1,10 +1,10 @@
-import {modelUpdateTask, taskAPI} from "common/api/task-api";
+import {modelUpdateTask, taskAPI} from "features/TodoListsList/TodoList/Task/task-api";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {handleServerAppError, handleServerNetworkError} from "common/utils";
-import {ResulCode, TaskPriorities, TaskStatuses} from "common/enums/common.enums";
+import {ResulCode, TaskPriorities, TaskStatuses} from "common/enums";
 
 
 const initialState: TasksStateType = {};

@@ -1,18 +1,18 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {FilterValuesType} from 'trash/App';
 import {EditableSpan} from 'common/components/EditableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
-import {Task} from "common/components/TodoList/Task/Task";
-import {tasksThunks} from "features/TodoListsList/tasks-reducer";
+import {Task} from "features/TodoListsList/TodoList/Task/Task";
+import {tasksThunks, TaskType} from "features/TodoListsList/tasks-reducer";
 import { useSelector} from "react-redux";
 import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {RequestStatusType} from "app/appReducer";
-import * as todolistSelectors from 'common/components/TodoList/todolistSelectors'
+import * as todolistSelectors from 'features/TodoListsList/TodoList/todolistSelectors'
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {AddItemForm} from "common/components/AddItemForm/AddItemForm";
 import {TaskStatuses} from "common/enums/common.enums";
+import {FilterValuesType} from "common/api/common.api";
 
 
 
@@ -35,10 +35,10 @@ export const Todolist = memo((props: PropsType) => {
     }, [])
 
     if (props.filter === "active") {
-        tasks = tasks.filter(t => t.status === TaskStatuses.New);
+        tasks = tasks.filter((t: TaskType) => t.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
+        tasks = tasks.filter((t: TaskType) => t.status === TaskStatuses.Completed);
     }
 
     const addTask = useCallback( (title: string) => {
@@ -64,7 +64,7 @@ export const Todolist = memo((props: PropsType) => {
         <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
         <div>
             {
-                tasks.length !== 0 ? tasks.map(t => {
+                tasks.length !== 0 ? tasks.map((t: TaskType) => {
                     return <Task key={t.id} task={t} todoListId={props.id}/>
                 }) : <p> sorry, no tasks </p>
             }
