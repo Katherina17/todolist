@@ -1,1 +1,1 @@
-import {ResponseType} from "common/types/common.types";
+export type {ResponseType, FieldErrorType} from "./common.types";

@@ -32,8 +32,9 @@ const login = createAppAsyncThunk<{isLoggedIn: boolean}, LoginParamsType>('auth/
             dispatch(authThunks.initializeApp())
             return {isLoggedIn: true}
         } else {
-            handleServerAppError(data.data, dispatch)
-            return rejectWithValue(null)
+            const isShowAppError = !data.data.fieldsErrors.length
+            handleServerAppError(data.data, dispatch, isShowAppError)
+            return rejectWithValue(data.data)
         }
     }
     catch (e) {
@@ -86,7 +87,6 @@ const initializeApp = createAppAsyncThunk<initializeAppReturnType, void>('auth/i
         if (res.data.resultCode === ResulCode.OK) {
             return {id: res.data.data.id, login: res.data.data.login, email: res.data.data.email, isLoggedIn: true}
         } else {
-            handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
         }
     } catch (e) {

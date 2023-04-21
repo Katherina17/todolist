@@ -13,12 +13,14 @@ import {Navigate} from "react-router-dom";
 import * as authSelectors from './authSelectors'
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {authThunks} from "features/Login/auth-reducer";
+import {FieldErrorType} from "common/types";
 
 type errorsFormType = {
     email?: string
     password?: string
     rememberMe?: boolean
 }
+
 
 export const Login = () => {
     let dispatch = useAppDispatch();
@@ -31,7 +33,7 @@ export const Login = () => {
             rememberMe: false
         },
         validate: (values) => {
-            const errors: errorsFormType = {};
+           /* const errors: errorsFormType = {};
             if (!values.email) {
                 errors.email = 'Email is required*';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -42,10 +44,19 @@ export const Login = () => {
             } else if (values.password.length < 4) {
                 errors.password = 'Must be characters 4 or more';
             }
-            return errors;
+            return errors;*/
         },
-        onSubmit: values => {
+        onSubmit: (values, formikHelpers) => {
             dispatch(authThunks.login({...values}))
+                .unwrap()
+                .catch((reason) => {
+                    const{fieldsErrors} = reason
+                    if(fieldsErrors){
+                        fieldsErrors.forEach((el:FieldErrorType) => {
+                            formikHelpers.setFieldError(el.field, el.error)
+                        })
+                    }
+                })
         },
     })
 
@@ -87,8 +98,7 @@ export const Login = () => {
                                           control={<Checkbox checked={formik.values.rememberMe}
                                                              {...formik.getFieldProps('rememberMe')}/>}
                                           />
-                        <Button type={'submit'} variant={'contained'} color={'primary'}
-                                disabled={!!formik.errors.email || !!formik.errors.password}>
+                        <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>
                     </FormGroup>

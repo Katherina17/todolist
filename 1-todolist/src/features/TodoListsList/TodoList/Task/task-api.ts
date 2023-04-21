@@ -1,6 +1,7 @@
 import {TaskType} from "features/TodoListsList/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 import {instance} from "common/api/common.api";
+import {ResponseType} from "common/types";
 
 
 
@@ -39,12 +40,6 @@ export type modelUpdateTask = {
 
 }
 
-type ResponseType<T = TaskType> = {
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-    data: T
-}
 
 
 
