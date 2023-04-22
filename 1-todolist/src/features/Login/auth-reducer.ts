@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
 import {todoListActions} from "features/TodoListsList/todolists-reducer";
 import {tasksActions} from "features/TodoListsList/tasks-reducer";
-import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";
 import {ResulCode} from "common/enums/common.enums";
 
 
@@ -25,8 +25,7 @@ const initialState = {
 
 const login = createAppAsyncThunk<{isLoggedIn: boolean}, LoginParamsType>('auth/login', async (arg, thunkAPI) => {
     const{dispatch, rejectWithValue} = thunkAPI;
-    dispatch(appAction.setStatus({status: 'loading'}))
-    try{
+    return thunkTryCatch(thunkAPI, async () => {
         let data = await authAPI.getUserLoginForm({email: arg.email, rememberMe: arg.rememberMe, password: arg.password, captcha: arg.captcha})
         if(data.data.resultCode === ResulCode.OK){
             dispatch(authThunks.initializeApp())
@@ -36,14 +35,7 @@ const login = createAppAsyncThunk<{isLoggedIn: boolean}, LoginParamsType>('auth/
             handleServerAppError(data.data, dispatch, isShowAppError)
             return rejectWithValue(data.data)
         }
-    }
-    catch (e) {
-        handleServerNetworkError(e, dispatch)
-        return rejectWithValue(null)
-    }
-    finally {
-        dispatch(appAction.setStatus({status: 'idle'}))
-    }
+    })
 })
 
 type LogOutReturnType = {
@@ -52,25 +44,17 @@ type LogOutReturnType = {
 
 const logOut = createAppAsyncThunk<LogOutReturnType, void>('auth/logOut', async (arg, thunkAPI) => {
     const{dispatch, rejectWithValue} = thunkAPI;
-    dispatch(appAction.setStatus({status: 'loading'}))
-    try{
-       const res = await authAPI.logOutUser()
-            if (res.data.resultCode === ResulCode.OK) {
-                dispatch(todoListActions.clearTodolists())
-                dispatch(tasksActions.clearTasks())
-                return {isLoggedIn: false}
-            } else {
-                handleServerAppError(res.data, dispatch)
-                return rejectWithValue(null)
-            }
-    }
-    catch (e) {
-        handleServerNetworkError(e, dispatch)
-        return rejectWithValue(null)
-    }
-    finally {
-        dispatch(appAction.setStatus({status: 'idle'}))
-    }
+    return thunkTryCatch(thunkAPI, async () => {
+        const res = await authAPI.logOutUser()
+        if (res.data.resultCode === ResulCode.OK) {
+            dispatch(todoListActions.clearTodolists())
+            dispatch(tasksActions.clearTasks())
+            return {isLoggedIn: false}
+        } else {
+            handleServerAppError(res.data, dispatch)
+            return rejectWithValue(null)
+        }
+    })
 })
 
 type initializeAppReturnType = {
@@ -133,45 +117,3 @@ export const authThunks = {login, logOut, initializeApp}
 
 
 type InitialStateType = typeof initialState
-
-
-
-// thunks
-
-
-/*
-export const initializeAppTC = (): AppThunk => (dispatch) => {
-    dispatch(appAction.setStatus({status: 'loading'}))
-    authAPI.isAuthUser().then(res => {
-        if (res.data.resultCode === 0) {
-            dispatch(authActions.setUserInfo({id: res.data.data.id, login: res.data.data.login, email: res.data.data.email}))
-            dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
-        } else {
-            handleServerAppError(res.data, dispatch)
-        }
-    })
-        .catch(error => handleServerNetworkError(error.message, dispatch))
-        .finally(() => {
-            dispatch(appAction.setStatus({status: 'idle'}))
-            dispatch(appAction.setInitialize({isInitialize: true}))
-        })
-}
-*/
-
-
-
-/*export const logOutTC = (): AppThunk => (dispatch) => {
-    dispatch(appAction.setStatus({status: 'loading'}))
-    authAPI.logOutUser().then(res => {
-        if (res.data.resultCode === 0) {
-            dispatch(authActions.setIsLoggedIn({isLoggedIn: false}))
-            dispatch(authActions.setUserInfo({id: null, login: null, email: null}))
-            dispatch(todoListActions.clearTodolists())
-            dispatch(tasksActions.clearTasks())
-        } else {
-            handleServerAppError(res.data, dispatch)
-        }
-    })
-        .catch(error => handleServerNetworkError(error.message, dispatch))
-        .finally(() => dispatch(appAction.setStatus({status: 'idle'})))
-}*/

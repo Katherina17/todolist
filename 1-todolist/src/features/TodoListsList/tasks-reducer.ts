@@ -3,40 +3,33 @@ import {appAction, RequestStatusType} from "app/appReducer";
 import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
-import {handleServerAppError, handleServerNetworkError} from "common/utils";
+import {handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";
 import {ResulCode, TaskPriorities, TaskStatuses} from "common/enums";
 
 
 const initialState: TasksStateType = {};
 
-const getTasks = createAppAsyncThunk<{tasks: TaskType[], todolistId:string}, string>('tasks/getTasks', async (todolistId, thunkAPI) => { //arg это как наши todolistID, thunkAPI - give dispatch
-    const {dispatch, rejectWithValue} = thunkAPI;
-    dispatch(appAction.setStatus({status: 'loading'}))
-    try{
+const getTasks = createAppAsyncThunk<{tasks: TaskType[], todolistId:string}, string>
+('tasks/getTasks', async (todolistId, thunkAPI) => { //arg это как наши todolistID, thunkAPI - give dispatch
+    return thunkTryCatch(thunkAPI, async () => {
         const res = await taskAPI.getTasks(todolistId)
         const tasks:TaskType[] = res.data.items
         return {tasks, todolistId}
-    }
-    catch (error){ //сюда попадают и js ошибки
-        handleServerNetworkError(error, dispatch)
-        return rejectWithValue(null)
-    }
-    finally {
-        dispatch(appAction.setStatus({status: 'succeeded'}))
-    }
+    })
+
 //thunk должна что-то возвращать
 //типизация, первое – что возвращает, второе – что принимает, третье – AsyncThunkConfig
 })
 
 
-const addTask = createAppAsyncThunk<{ task: TaskType }, {todolistId: string, title: string}>('tasks/addTask', async (args, thunkAPI) => {
+const addTask = createAppAsyncThunk<{ task: TaskType }, {todolistId: string, title: string}>
+('tasks/addTask', async (args, thunkAPI) => {
         const {dispatch, rejectWithValue} = thunkAPI;
         dispatch(appAction.setStatus({status: 'loading'}))
         try {
             let res = await taskAPI.createTask(args.todolistId, args.title)
             dispatch(todoListActions.changeEntityStatus({entityStatus: 'idle', id: res.data.data.item.todoListId}))
-
-            if(res.data.resultCode === ResulCode.OK){
+            if (res.data.resultCode === ResulCode.OK) {
                 let task = res.data.data.item
                 return {task}
             } else {
