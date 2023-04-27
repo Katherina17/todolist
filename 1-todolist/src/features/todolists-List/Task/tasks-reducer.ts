@@ -1,4 +1,4 @@
-import {modelUpdateTask, taskAPI} from "features/todolists-List/task/task-api";
+import {modelUpdateTask, taskAPI} from "features/todolists-List/Task/task-api";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {todoListActions, todoListThunks} from "features/todolists-List/todolists/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";

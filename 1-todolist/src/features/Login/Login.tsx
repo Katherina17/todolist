@@ -11,7 +11,7 @@ import {useFormik} from "formik";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 import * as authSelectors from './authSelectors'
-import {authThunks} from "features/login/auth-reducer";
+import {authThunks} from "features/Login/auth-reducer";
 import {FieldErrorType} from "common/types";
 import {useActions} from "common/hooks";
 

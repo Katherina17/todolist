@@ -5,12 +5,12 @@ import {Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar
 import {Menu} from "@mui/icons-material";
 import {TodoListLists} from "features/todolists-List/TodoListsList";
 import {useSelector} from "react-redux";
-import {CustomizedSnackbars} from "common/components/errorSnakbar/ErrorSnackbar";
-import {Login} from "features/login/Login";
+import {CustomizedSnackbars} from "common/components/ErrorSnakbar/ErrorSnackbar";
+import {Login} from "features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import * as appSelectors from './appSelectors'
-import * as authSelectors from '../features/login/authSelectors'
-import {authThunks} from "features/login/auth-reducer";
+import * as authSelectors from '../features/Login/authSelectors'
+import {authThunks} from "features/Login/auth-reducer";
 import {useActions} from "common/hooks";
 
 
@@ -52,7 +52,7 @@ function App() {
             <Container fixed>
                 <Routes>
                     <Route path={'/'} element={<TodoListLists/>}/>
-                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/Login'} element={<Login/>}/>
                     <Route path={'/404'} element={<h1 style={{textAlign: 'center'}}> 404: PAGE NOT FOUND</h1>}/>
                     <Route path={'*'} element={<Navigate to={'/404'}/>}/>
                 </Routes>

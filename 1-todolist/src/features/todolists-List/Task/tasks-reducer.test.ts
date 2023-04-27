@@ -2,7 +2,7 @@ import {
     tasksActions,
     tasksReducer, TasksStateType,
     tasksThunks, TaskType
-} from 'features/todolists-List/task/tasks-reducer'
+} from 'features/todolists-List/Task/tasks-reducer'
 import {todoListThunks} from "features/todolists-List/todolists/todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 
@@ -29,7 +29,7 @@ beforeEach(() => {
 })
 
 
-test('correct task should be deleted from correct array', () => {
+test('correct Task should be deleted from correct array', () => {
     const action = tasksThunks.deleteTask.fulfilled({id: '2', todoListId: 'todolistId1'}, 'requestedId',{id: '2', todoListId: 'todolistId1'} )
     const endState = tasksReducer(startState, action)
     expect(endState).toEqual({
@@ -48,7 +48,7 @@ test('correct task should be deleted from correct array', () => {
     })
 })
 
-test('correct task should be added to correct array', () => {
+test('correct Task should be added to correct array', () => {
 
     const task: TaskType = {
         addedDate: '', deadline: null, description: null, id: '3', order: 10, priority: TaskPriorities.Low,
@@ -64,7 +64,7 @@ test('correct task should be added to correct array', () => {
     expect(endState['todolistId1'][0].status).toBe(0)
 })
 
-test('status of specified task should be changed', () => {
+test('status of specified Task should be changed', () => {
     const action = tasksThunks.updateTaskStatus.fulfilled( {id: '1', status:2, todoListId: 'todolistId2'},'requestedId', {id: '1', status:2, todoListId: 'todolistId2'})
     const endState = tasksReducer(startState, action)
 
@@ -72,7 +72,7 @@ test('status of specified task should be changed', () => {
     expect(endState['todolistId1'][0].status).toBe(0)
 })
 
-test('a title of specified task should be changed', () => {
+test('a title of specified Task should be changed', () => {
     const action = tasksThunks.updateTaskTitle.fulfilled({id: '1', newTitle: 'HTML', todoListId: 'todolistId1'}, 'requestedId', {id: '1', title: 'HTML&CSS', todoListId: 'todolistId1'})
     const endState = tasksReducer(startState, action)
 

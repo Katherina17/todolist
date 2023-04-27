@@ -148,9 +148,6 @@ export const TodoListReducer = slice.reducer;
 export const todoListActions = slice.actions;
 export const todoListThunks = {getTodoLists, deleteTodoList, addTodoList, updateTodoListTitle}
 
-
-
-
 const top10 = 'top10'
 enum ButtonName{
     top10 = 'Топ-10',

@@ -1,8 +1,8 @@
-import {authAPI, LoginParamsType} from "features/login/auth-api";
+import {authAPI, LoginParamsType} from "features/Login/auth-api";
 import {createSlice} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
 import {todoListActions} from "features/todolists-List/todolists/todolists-reducer";
-import {tasksActions} from "features/todolists-List/task/tasks-reducer";
+import {tasksActions} from "features/todolists-List/Task/tasks-reducer";
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";
 import {ResulCode} from "common/enums/common.enums";
 
@@ -23,7 +23,7 @@ const initialState = {
     user: userInfo
 }
 
-const login = createAppAsyncThunk<{isLoggedIn: boolean}, LoginParamsType>('auth/login', async (arg, thunkAPI) => {
+const login = createAppAsyncThunk<{isLoggedIn: boolean}, LoginParamsType>('auth/Login', async (arg, thunkAPI) => {
     const{dispatch, rejectWithValue} = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
         let data = await authAPI.getUserLoginForm({email: arg.email, rememberMe: arg.rememberMe, password: arg.password, captcha: arg.captcha})
@@ -90,7 +90,7 @@ const slice = createSlice({
       /*  setIsLoggedIn: (state, action: PayloadAction<{isLoggedIn: boolean}>) => {
             state.isLoggedIn = action.payload.isLoggedIn
         }*/
-        /*setUserInfo: (state, action:PayloadAction<{id: number | null, login: string | null, email: string | null}>) => {
+        /*setUserInfo: (state, action:PayloadAction<{id: number | null, Login: string | null, email: string | null}>) => {
             state.user = action.payload
         }*/
     },
