@@ -1,10 +1,10 @@
 import {Grid, Paper} from "@mui/material";
 import React, {useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
-import {todoListActions, todoListThunks} from "./todolists-reducer";
-import {tasksThunks} from "./tasks-reducer";
+import {todoListActions, todoListThunks} from "features/todolists-List/todolists/todolists-reducer";
+import {tasksThunks} from "features/todolists-List/task/tasks-reducer";
 import {Navigate} from "react-router-dom";
-import * as authSelectors from '../Login/authSelectors'
+import * as authSelectors from '../login/authSelectors'
 import * as todoListListsSelectors from './todoListsSelectors'
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {AddItemForm, Todolist} from "common/components";
@@ -22,10 +22,6 @@ export const TodoListLists = () => {
     const isLoggedIn = useSelector(authSelectors.isLoggedIn)
     const addTask = useCallback((title: string, todolistId: string) => {
         dispatch(tasksThunks.addTask({todolistId: todolistId, title: title}))
-    }, [])
-
-    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        dispatch(tasksThunks.updateTaskTitle({id:id, title: newTitle, todoListId: todolistId}))
     }, [])
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
@@ -58,7 +54,6 @@ export const TodoListLists = () => {
                                 changeFilter={changeFilter}
                                 addTask={addTask}
                                 filter={tl.filter}
-                                changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
                                 entityStatus={tl.entityStatus}
                             />

@@ -1,16 +1,16 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {EditableSpan} from 'common/components/EditableSpan/EditableSpan';
+import {EditableSpan} from 'common/components/editableSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import {Button} from "@mui/material";
-import {Task} from "features/TodoListsList/TodoList/Task/Task";
-import {tasksThunks, TaskType} from "features/TodoListsList/tasks-reducer";
+import {Task} from "features/todolists-List/task/Task";
+import {tasksThunks, TaskType} from "features/todolists-List/task/tasks-reducer";
 import { useSelector} from "react-redux";
-import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
+import {todoListActions, todoListThunks} from "features/todolists-List/todolists/todolists-reducer";
 import {RequestStatusType} from "app/appReducer";
-import * as todolistSelectors from 'features/TodoListsList/TodoList/todolistSelectors'
+import * as todolistSelectors from 'features/todolists-List/todolists/todolistsSelectors'
 import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {AddItemForm} from "common/components/AddItemForm/AddItemForm";
+import {AddItemForm} from "common/components/addItemForm/AddItemForm";
 import {TaskStatuses} from "common/enums/common.enums";
 import {FilterValuesType} from "common/api/common.api";
 
@@ -23,7 +23,6 @@ type PropsType = {
     addTask: (title: string, todolistId: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     entityStatus: RequestStatusType
 }
 

@@ -1,4 +1,4 @@
-import {todolistAPI, TodoListType} from "features/TodoListsList/todolist-api";
+import {todolistsApi, TodoListType} from "features/todolists-List/todolists/todolists-api";
 import {appAction, RequestStatusType} from "app/appReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
@@ -15,7 +15,7 @@ const getTodoLists = createAppAsyncThunk<TodoListType[]>('todolists/getTodoLists
     const {dispatch, rejectWithValue} = thunkAPI;
 
     return thunkTryCatch(thunkAPI, async () => {
-        const res = await todolistAPI.getTodoList();
+        const res = await todolistsApi.getTodoList();
         if(res.data){
             let todoLists:TodoListType[] = res.data
             return todoLists
@@ -35,7 +35,7 @@ const deleteTodoList = createAppAsyncThunk<DeleteTodoList, DeleteTodoList>('todo
     dispatch(appAction.setStatus({status: 'loading'}))
     dispatch(todoListActions.changeEntityStatus({entityStatus: 'loading', id: arg.id}))
     try{
-        let res = await todolistAPI.deleteTodolist(arg.id)
+        let res = await todolistsApi.deleteTodolist(arg.id)
             if (res.data.resultCode === ResulCode.OK) {
                 return {id: arg.id}
             } else {
@@ -62,7 +62,7 @@ const addTodoList = createAppAsyncThunk<addTodoPayloadReturnType, {title: string
     const {dispatch, rejectWithValue} = thunkAPI;
 
     return thunkTryCatch(thunkAPI, async () => {
-        const res = await todolistAPI.createTodoList(arg.title)
+        const res = await todolistsApi.createTodoList(arg.title)
         if(ResulCode.OK === res.data.resultCode){
             return {todoList: res.data.data.item, newTodolistId: res.data.data.item.id}
         } else {
@@ -82,7 +82,7 @@ const updateTodoListTitle = createAppAsyncThunk<updateTodoListTitleReturnType, u
     dispatch(appAction.setStatus({status: 'loading'}))
     dispatch(todoListActions.changeEntityStatus({entityStatus: 'loading', id: arg.id}))
     try{
-        let res = await todolistAPI.updateTodolistTitle(arg.id, arg.title)
+        let res = await todolistsApi.updateTodolistTitle(arg.id, arg.title)
             if (ResulCode.OK === res.data.resultCode) {
             return {id: arg.id, title: arg.title}
             } else {

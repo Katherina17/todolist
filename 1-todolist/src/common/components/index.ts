@@ -1,2 +1,2 @@
-export {AddItemForm} from './AddItemForm/AddItemForm'
-export {Todolist} from '../../features/TodoListsList/TodoList/Todolist'
+export {AddItemForm} from './addItemForm/AddItemForm'
+export {Todolist} from 'features/todolists-List/todolists/todolist/Todolist'

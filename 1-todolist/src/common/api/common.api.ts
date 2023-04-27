@@ -1,4 +1,4 @@
-import {TodoListType} from "features/TodoListsList/todolist-api";
+import {TodoListType} from "features/todolists-List/todolists/todolists-api";
 import {RequestStatusType} from "app/appReducer";
 import axios from "axios";
 

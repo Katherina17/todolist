@@ -1,5 +1,5 @@
-import {TodoListReducer, todoListThunks} from "./todolists-reducer";
-import {tasksReducer, TasksStateType} from "./tasks-reducer";
+import {TodoListReducer, todoListThunks} from "features/todolists-List/todolists/todolists-reducer";
+import {tasksReducer, TasksStateType} from "features/todolists-List/task/tasks-reducer";
 import {v1} from "uuid";
 import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 import {ValidTodoListType} from "common/api/common.api";

@@ -2,7 +2,7 @@ import React from 'react';
 import './app/index.css';
 import * as serviceWorker from './serviceWorker';
 import { createRoot } from 'react-dom/client';
-import AppWithRedux from "./app/AppWithRedux";
+import App from "app/App";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
 import {BrowserRouter} from "react-router-dom";
@@ -12,7 +12,7 @@ const root = createRoot(container);
 root.render(
     <Provider store={store}>
         <BrowserRouter>
-            <AppWithRedux/>
+            <App/>
         </BrowserRouter>
     </Provider>
 );

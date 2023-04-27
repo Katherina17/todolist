@@ -1,6 +1,6 @@
-import {modelUpdateTask, taskAPI} from "features/TodoListsList/TodoList/Task/task-api";
+import {modelUpdateTask, taskAPI} from "features/todolists-List/task/task-api";
 import {appAction, RequestStatusType} from "app/appReducer";
-import {todoListActions, todoListThunks} from "features/TodoListsList/todolists-reducer";
+import {todoListActions, todoListThunks} from "features/todolists-List/todolists/todolists-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";

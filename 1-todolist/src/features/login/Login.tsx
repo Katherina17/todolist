@@ -11,19 +11,13 @@ import {useFormik} from "formik";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 import * as authSelectors from './authSelectors'
-import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {authThunks} from "features/Login/auth-reducer";
+import {authThunks} from "features/login/auth-reducer";
 import {FieldErrorType} from "common/types";
-
-type errorsFormType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-}
+import {useActions} from "common/hooks";
 
 
 export const Login = () => {
-    let dispatch = useAppDispatch();
+    const {login} = useActions(authThunks)
     const isLoggedIn = useSelector(authSelectors.isLoggedIn)
 
     const formik = useFormik({
@@ -32,8 +26,8 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        validate: (values) => {
-           /* const errors: errorsFormType = {};
+        /*validate: (values) => {
+            const errors: Partial<LoginParamsType> = {};
             if (!values.email) {
                 errors.email = 'Email is required*';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -44,10 +38,10 @@ export const Login = () => {
             } else if (values.password.length < 4) {
                 errors.password = 'Must be characters 4 or more';
             }
-            return errors;*/
-        },
+            return errors;
+        },*/
         onSubmit: (values, formikHelpers) => {
-            dispatch(authThunks.login({...values}))
+            login({...values})
                 .unwrap()
                 .catch((reason) => {
                     const{fieldsErrors} = reason

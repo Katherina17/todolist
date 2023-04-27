@@ -2,7 +2,7 @@ import {ResponseType} from "common/types/common.types";
 import {instance} from "common/api/common.api";
 
 
-export const todolistAPI = {
+export const todolistsApi = {
     getTodoList(){
         return instance.get<TodoListType[]>('todo-lists')
     },

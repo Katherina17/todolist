@@ -1,8 +1,8 @@
-import {authAPI, LoginParamsType} from "features/Login/auth-api";
+import {authAPI, LoginParamsType} from "features/login/auth-api";
 import {createSlice} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
-import {todoListActions} from "features/TodoListsList/todolists-reducer";
-import {tasksActions} from "features/TodoListsList/tasks-reducer";
+import {todoListActions} from "features/todolists-List/todolists/todolists-reducer";
+import {tasksActions} from "features/todolists-List/task/tasks-reducer";
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";
 import {ResulCode} from "common/enums/common.enums";
 
@@ -112,8 +112,4 @@ const slice = createSlice({
 })
 
 export const authReducer = slice.reducer
-export const authActions = slice.actions
 export const authThunks = {login, logOut, initializeApp}
-
-
-type InitialStateType = typeof initialState

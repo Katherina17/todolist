@@ -4,12 +4,12 @@ import {AddBox} from "@mui/icons-material";
 
 
 
-type AddItemFormPropsType = {
+type PropsType = {
     addItem: (title: string) => void
     disabled?: boolean
 }
 
-export const AddItemForm = memo((props: AddItemFormPropsType) =>  {
+export const AddItemForm = memo((props: PropsType) =>  {
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 

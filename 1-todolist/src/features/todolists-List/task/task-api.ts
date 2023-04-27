@@ -1,4 +1,4 @@
-import {TaskType} from "features/TodoListsList/tasks-reducer";
+import {TaskType} from "features/todolists-List/task/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "common/enums/common.enums";
 import {instance} from "common/api/common.api";
 import {ResponseType} from "common/types";

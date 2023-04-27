@@ -3,31 +3,30 @@ import './App.css';
 import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {TodoListLists} from "features/TodoListsList/TodoListsList";
+import {TodoListLists} from "features/todolists-List/TodoListsList";
 import {useSelector} from "react-redux";
-import {CustomizedSnackbars} from "common/components/ErrorSnakbar/ErrorSnackbar";
-import {Login} from "features/Login/Login";
+import {CustomizedSnackbars} from "common/components/errorSnakbar/ErrorSnackbar";
+import {Login} from "features/login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import * as appSelectors from './appSelectors'
-import * as authSelectors from '../features/Login/authSelectors'
-import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {authThunks} from "features/Login/auth-reducer";
+import * as authSelectors from '../features/login/authSelectors'
+import {authThunks} from "features/login/auth-reducer";
+import {useActions} from "common/hooks";
 
 
-function AppWithRedux() {
+function App() {
     const status = useSelector(appSelectors.status);
     const isLoggedIn = useSelector(authSelectors.isLoggedIn)
     const isInitialized = useSelector(appSelectors.isInitialized)
     const userLogin = useSelector(appSelectors.userLogin)
 
-    const dispatch = useAppDispatch();
-
+    const {initializeApp, logOut} = useActions(authThunks);
 
     const onClickLogOutHandler = () => {
-        dispatch(authThunks.logOut())
+        logOut({})
     }
     useEffect(() => {
-        dispatch(authThunks.initializeApp())
+        initializeApp({}) //{} для заглушки
     }, [])
 
     if (!isInitialized) {
@@ -63,4 +62,4 @@ function AppWithRedux() {
     );
 }
 
-export default AppWithRedux;
+export default App;
