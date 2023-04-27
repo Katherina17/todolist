@@ -2,7 +2,7 @@ import {authAPI, LoginParamsType} from "features/Login/auth-api";
 import {createSlice} from "@reduxjs/toolkit";
 import {appAction} from "app/appReducer";
 import {todoListActions} from "features/todolists-List/todolists/todolists-reducer";
-import {tasksActions} from "features/todolists-List/Task/tasks-reducer";
+import {tasksActions} from "features/todolists-List/todolists/Todolist/Tasks/Task/tasks-reducer";
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";
 import {ResulCode} from "common/enums/common.enums";
 

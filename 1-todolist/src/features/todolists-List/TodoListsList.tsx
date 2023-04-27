@@ -21,7 +21,7 @@ export const TodoListLists = () => {
        getTodoLists({})
     }, [])
 
-    const addTodolistCallBack = (title: string) => addTodoList({title: title})
+    const addTodolistCallBack = (title: string) => addTodoList({title: title}).unwrap();
     if(!isLoggedIn){
         return <Navigate to={'/Login'}/>
     }

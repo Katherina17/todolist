@@ -2,10 +2,10 @@ import {IconButtonDeleteMemo} from "features/todolists-List/todolists/Todolist/T
 import {Checkbox} from "@mui/material";
 import {EditableSpan} from "common/components/EditableSpan/EditableSpan";
 import React, {FC} from "react";
-import {tasksThunks, TaskType} from "features/todolists-List/Task/tasks-reducer";
+import {tasksThunks, TaskType} from "features/todolists-List/todolists/Todolist/Tasks/Task/tasks-reducer";
 import {TaskStatuses} from "common/enums/common.enums";
 import {useActions} from "common/hooks";
-import s from './task.module.css'
+import s from 'features/todolists-List/todolists/Todolist/Tasks/Task/task.module.css'
 
 type PropsType = {
     task: TaskType,

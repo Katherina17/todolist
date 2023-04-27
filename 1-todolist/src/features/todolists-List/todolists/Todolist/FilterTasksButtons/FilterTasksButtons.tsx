@@ -1,5 +1,5 @@
 import {Button} from "@mui/material";
-import React, {FC} from "react";
+import React, {FC, memo} from "react";
 import {FilterValuesType} from "common/api/common.api";
 import {useActions} from "common/hooks";
 import {todoListActions} from "features/todolists-List/todolists/todolists-reducer";
@@ -9,7 +9,7 @@ type PropsType = {
     filter: FilterValuesType
 }
 
-export const FilterTasksButtons:FC<PropsType> = ({id, filter}) => {
+export const FilterTasksButtons:FC<PropsType> = memo(({id, filter}) => {
     const {changeFilter} = useActions(todoListActions)
 
     const changeFilterHandler = (filter: FilterValuesType) => {
@@ -29,4 +29,4 @@ export const FilterTasksButtons:FC<PropsType> = ({id, filter}) => {
                     color={'secondary'}> Completed </Button>
         </div>
     )
-}
+})

@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField/TextField';
-import React, {ChangeEvent, memo, useCallback, useState} from 'react';
+import React, {ChangeEvent, FC, memo, useState} from 'react';
 
 
 type PropsType = {
@@ -8,18 +8,18 @@ type PropsType = {
     disabled?: boolean
 }
 
-export const EditableSpan = memo((props: PropsType) => {
+export const EditableSpan:FC<PropsType> = memo(({value, disabled, onChange}) => {
     let [editMode, setEditMode] = useState(false);
-    let [title, setTitle] = useState(props.value);
+    let [title, setTitle] = useState(value);
 
-    const activateEditMode = useCallback(() => {
+    const activateEditMode = () => {
         setEditMode(true);
-        setTitle(props.value);
-    }, [props.value])
-    const activateViewMode = useCallback(() => {
+        setTitle(value);
+    }
+    const activateViewMode = () => {
         setEditMode(false);
-        props.onChange(title);
-    }, [props.onChange, title])
+        onChange(title);
+    }
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
@@ -27,6 +27,6 @@ export const EditableSpan = memo((props: PropsType) => {
     return editMode
         ? <TextField variant="outlined"
                      value={title} onChange={changeTitle}
-                     autoFocus onBlur={activateViewMode} disabled={props.disabled} />
-        : <span onDoubleClick={activateEditMode}>{props.value}</span>
+                     autoFocus onBlur={activateViewMode} disabled={disabled} />
+        : <span onDoubleClick={activateEditMode}>{value}</span>
 })
