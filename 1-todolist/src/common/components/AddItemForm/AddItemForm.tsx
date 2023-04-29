@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC, KeyboardEvent, memo, useState} from 'react';
 import {IconButton, TextField} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
+import {RejectValueType} from "common/utils/create-app-async-thunk";
 
 
 
@@ -15,11 +16,13 @@ export const AddItemForm:FC<PropsType> = memo(({addItem, disabled}) =>  {
 
     const addItemHandler = () => {
         if (title.trim() !== "") {
-            addItem(title).then(() => {
-                setTitle("")
-            })
-                .catch((e) => {
-                    setError(e.messages[0])
+            addItem(title)
+                .then(() => {
+                    setTitle("")
+                })
+                .catch((e: RejectValueType) => {
+                    const messages = e.data.messages
+                    setError(messages.length ? messages[0] : 'Some error occurred')
                 })
         } else {
             setError("Title is required");

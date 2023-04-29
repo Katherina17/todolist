@@ -14,6 +14,7 @@ import * as authSelectors from './authSelectors'
 import {authThunks} from "features/Login/auth-reducer";
 import {FieldErrorType} from "common/types";
 import {useActions} from "common/hooks";
+import {LoginParamsType} from "features/Login/auth-api";
 
 
 export const Login = () => {
@@ -26,7 +27,7 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        /*validate: (values) => {
+        validate: (values) => {
             const errors: Partial<LoginParamsType> = {};
             if (!values.email) {
                 errors.email = 'Email is required*';
@@ -39,7 +40,7 @@ export const Login = () => {
                 errors.password = 'Must be characters 4 or more';
             }
             return errors;
-        },*/
+        },
         onSubmit: (values, formikHelpers) => {
             login({...values})
                 .unwrap()

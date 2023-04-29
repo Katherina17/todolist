@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import './App.css';
 import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
@@ -36,7 +35,8 @@ function App() {
         </div>
     }
     return (
-        <div className="App">
+        <div>
+            <CustomizedSnackbars/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -57,7 +57,6 @@ function App() {
                     <Route path={'*'} element={<Navigate to={'/404'}/>}/>
                 </Routes>
             </Container>
-            <CustomizedSnackbars/>
         </div>
     );
 }

@@ -2,40 +2,20 @@ import {todolistsApi, TodoListType} from "features/todolists-List/todolists/todo
 import {RequestStatusType} from "app/appReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
-import {handleServerAppError, handleServerNetworkError, thunkTryCatch} from "common/utils";
 import {FilterValuesType, ValidTodoListType} from "common/api/common.api";
 import {ResulCode} from "common/enums";
 
-
-
 const initialState: ValidTodoListType[] = [];
 
-
-/*const getTodoLists = createAppAsyncThunk<TodoListType[]>('todolists/getTodoLists', async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI;
-
-    return thunkTryCatch(thunkAPI, async () => {
-        const res = await todolistsApi.getTodoList();
-        if(res.data){
-            let todoLists:TodoListType[] = res.data
-            return todoLists
-        } else {
-            handleServerAppError(res.data, dispatch)
-            return rejectWithValue(null)
-        }
-    })
-})*/
-
-
 const getTodoLists = createAppAsyncThunk<TodoListType[]>('todolists/getTodoLists', async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI;
-        const res = await todolistsApi.getTodoList();
-        if(res.data){
-            let todoLists:TodoListType[] = res.data
-            return todoLists
-        } else {
-            return rejectWithValue(res.data)
-        }
+    const {rejectWithValue} = thunkAPI;
+    const res = await todolistsApi.getTodoList();
+    if (res.data) {
+        let todoLists: TodoListType[] = res.data
+        return todoLists
+    } else {
+        return rejectWithValue(res.data)
+    }
 })
 
 type DeleteTodoList = {
@@ -45,20 +25,14 @@ type DeleteTodoList = {
 const deleteTodoList = createAppAsyncThunk<DeleteTodoList, DeleteTodoList>('todolists/deleteTodoList', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI;
     dispatch(todoListActions.changeEntityStatus({entityStatus: 'loading', id: arg.id}))
-    try{
+    try {
         let res = await todolistsApi.deleteTodolist(arg.id)
-            if (res.data.resultCode === ResulCode.OK) {
-                return {id: arg.id}
-            } else {
-                handleServerAppError(res.data, dispatch)
-                return rejectWithValue(null)
-            }
-    }
-    catch (e) {
-        handleServerNetworkError(e, dispatch)
-        return rejectWithValue(null)
-    }
-    finally {
+        if (res.data.resultCode === ResulCode.OK) {
+            return {id: arg.id}
+        } else {
+            return rejectWithValue({data: res.data, showGlobalError: true})
+        }
+    } finally {
         dispatch(todoListActions.changeEntityStatus({entityStatus: 'idle', id: arg.id}))
     }
 })
@@ -68,25 +42,13 @@ type addTodoPayloadReturnType = {
     newTodolistId: string
 }
 
-/*const _addTodoList = createAppAsyncThunk<addTodoPayloadReturnType, {title: string}>('todolists/addTodoList', async (arg, thunkAPI) => {
-    const {rejectWithValue} = thunkAPI;
-    return thunkTryCatch(thunkAPI, async () => {
-        const res = await todolistsApi.createTodoList(arg.title)
-        if(ResulCode.OK === res.data.resultCode){
-            return {todoList: res.data.data.item, newTodolistId: res.data.data.item.id}
-        } else {
-            return rejectWithValue(res.data)
-        }
-    })
-})*/
-
 const addTodoList = createAppAsyncThunk<addTodoPayloadReturnType, {title: string}>('todolists/addTodoList', async (arg, thunkAPI) => {
     const {rejectWithValue} = thunkAPI;
         const res = await todolistsApi.createTodoList(arg.title)
         if(ResulCode.OK === res.data.resultCode){
             return {todoList: res.data.data.item, newTodolistId: res.data.data.item.id}
         } else {
-            return rejectWithValue(res.data)
+            return rejectWithValue({data: res.data, showGlobalError: false})
         }
 })
 
@@ -98,38 +60,32 @@ type updateTodoListTitleReturnType = {
 const updateTodoListTitle = createAppAsyncThunk<updateTodoListTitleReturnType, updateTodoListTitleReturnType>('todolists/updateTodoListTitle', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI;
     dispatch(todoListActions.changeEntityStatus({entityStatus: 'loading', id: arg.id}))
-    try{
+    try {
         let res = await todolistsApi.updateTodolistTitle(arg.id, arg.title)
-            if (ResulCode.OK === res.data.resultCode) {
+        if (ResulCode.OK === res.data.resultCode) {
             return {id: arg.id, title: arg.title}
-            } else {
-                handleServerAppError(res.data, dispatch)
-                return rejectWithValue(null)
-            }
+        } else {
+            return rejectWithValue({data: res.data, showGlobalError: true})
         }
-    catch (e) {
-        handleServerNetworkError(e, dispatch)
-        return rejectWithValue(null)
-    }
-    finally {
+    } finally {
         dispatch(todoListActions.changeEntityStatus({entityStatus: 'succeeded', id: arg.id}))
     }
-} )
+})
 
 
 const slice = createSlice({
     name: 'todolists',
     initialState,
     reducers: {
-        changeFilter: (state, action:PayloadAction<{value: FilterValuesType, id: string}>) => {
+        changeFilter: (state, action: PayloadAction<{ value: FilterValuesType, id: string }>) => {
             const todo = state.find(todo => todo.id === action.payload.id) //find an object
-            if(todo){
+            if (todo) {
                 todo.filter = action.payload.value
             }
         },
-        changeEntityStatus: (state, action:PayloadAction<{entityStatus: RequestStatusType, id: string}>) => {
+        changeEntityStatus: (state, action: PayloadAction<{ entityStatus: RequestStatusType, id: string }>) => {
             const todo = state.find(todo => todo.id === action.payload.id) //find an object
-            if(todo){
+            if (todo) {
                 todo.entityStatus = action.payload.entityStatus
             }
         },
@@ -138,24 +94,24 @@ const slice = createSlice({
         }
     },
     extraReducers: builder => {
-      builder
-          .addCase(todoListThunks.getTodoLists.fulfilled, (state, action) => {
-              return action.payload.map(td => ({...td, filter: 'all', entityStatus: 'idle'}))
-          })
-          .addCase(todoListThunks.deleteTodoList.fulfilled, (state, action) => {
-              const index = state.findIndex(todo => todo.id === action.payload.id);
-              if (index !== -1) state.splice(index, 1)
-          })
-          .addCase(todoListThunks.addTodoList.fulfilled, (state, action) => {
-              const newTodoList:ValidTodoListType = {...action.payload.todoList, filter: 'all', entityStatus: 'idle'}
-              state.unshift(newTodoList)
-          })
-          .addCase(todoListThunks.updateTodoListTitle.fulfilled, (state, action) => {
-              const todo = state.find(todo => todo.id === action.payload.id) //find an object
-              if(todo){
-                  todo.title = action.payload.title
-              }
-          })
+        builder
+            .addCase(todoListThunks.getTodoLists.fulfilled, (state, action) => {
+                return action.payload.map(td => ({...td, filter: 'all', entityStatus: 'idle'}))
+            })
+            .addCase(todoListThunks.deleteTodoList.fulfilled, (state, action) => {
+                const index = state.findIndex(todo => todo.id === action.payload.id);
+                if (index !== -1) state.splice(index, 1)
+            })
+            .addCase(todoListThunks.addTodoList.fulfilled, (state, action) => {
+                const newTodoList: ValidTodoListType = {...action.payload.todoList, filter: 'all', entityStatus: 'idle'}
+                state.unshift(newTodoList)
+            })
+            .addCase(todoListThunks.updateTodoListTitle.fulfilled, (state, action) => {
+                const todo = state.find(todo => todo.id === action.payload.id) //find an object
+                if (todo) {
+                    todo.title = action.payload.title
+                }
+            })
     }
 
 })
