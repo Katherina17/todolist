@@ -10,19 +10,13 @@ const slice = createSlice({
     isInitialized: false as boolean,
   },
   reducers: {
-    setStatus: (
-      state,
-      action: PayloadAction<{ status: RequestStatusType }>
-    ) => {
+    setStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
       state.status = action.payload.status;
     },
     setError: (state, action: PayloadAction<{ error: null | string }>) => {
       state.error = action.payload.error;
     },
-    setInitialize: (
-      state,
-      action: PayloadAction<{ isInitialize: boolean }>
-    ) => {
+    setInitialize: (state, action: PayloadAction<{ isInitialize: boolean }>) => {
       state.isInitialized = action.payload.isInitialize;
     },
   },

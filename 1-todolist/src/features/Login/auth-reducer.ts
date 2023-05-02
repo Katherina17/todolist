@@ -17,7 +17,13 @@ type userInfoType = {
     login: string | null;
     email: string | null;
 };
-const initialState = {
+
+export type AuthInitialStateType = {
+    isLoggedIn: boolean
+    user: userInfoType
+}
+
+const initialState:AuthInitialStateType = {
     isLoggedIn: false,
     user: userInfo,
 };
