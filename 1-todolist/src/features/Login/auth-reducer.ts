@@ -20,13 +20,17 @@ type userInfoType = {
 
 export type AuthInitialStateType = {
     isLoggedIn: boolean
-    user: userInfoType
+    user: userInfoType,
+    captcha: null | string
 }
 
 const initialState:AuthInitialStateType = {
     isLoggedIn: false,
     user: userInfo,
+    captcha: null
 };
+
+
 
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
     "auth/Login",
@@ -41,7 +45,11 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
         if (data.data.resultCode === ResulCode.OK) {
             dispatch(authThunks.initializeApp());
             return {isLoggedIn: true};
-        } else {
+        } else if(data.data.resultCode === 10){
+            dispatch(getCaptchaUrl())
+            return rejectWithValue({data: data.data, showGlobalError: false});
+        }
+        else {
             const isShowAppError = !data.data.fieldsErrors.length;
             return rejectWithValue({
                 data: data.data,
@@ -99,6 +107,17 @@ const initializeApp = createAppAsyncThunk<initializeAppReturnType, void>(
     }
 );
 
+
+const getCaptchaUrl = createAppAsyncThunk<{ captcha: string }, void>(
+    "auth/getCaptchaUrl",
+    async (arg, thunkAPI) => {
+        const res = await authAPI.getCaptcha();
+        return {
+            captcha: res.data.url
+        };
+    }
+);
+
 const slice = createSlice({
     name: "auth", //slice name
     initialState, //initial
@@ -107,6 +126,7 @@ const slice = createSlice({
         builder
             .addCase(authThunks.login.fulfilled, (state, action) => {
                 state.isLoggedIn = action.payload.isLoggedIn;
+                state.captcha = null;
             })
             .addCase(authThunks.logOut.fulfilled, (state, action) => {
                 state.isLoggedIn = action.payload.isLoggedIn;
@@ -119,9 +139,12 @@ const slice = createSlice({
                     id: action.payload.id,
                 };
                 state.isLoggedIn = action.payload.isLoggedIn;
-            });
+            })
+            .addCase(authThunks.getCaptchaUrl.fulfilled, (state, action) => {
+                state.captcha = action.payload.captcha
+            })
     },
 });
 
 export const authReducer = slice.reducer;
-export const authThunks = {login, logOut, initializeApp};
+export const authThunks = {login, logOut, initializeApp, getCaptchaUrl};

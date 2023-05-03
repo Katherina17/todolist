@@ -6,7 +6,7 @@ export type LoginParamsType = {
     email: string
     password: string
     rememberMe: boolean
-    captcha?: boolean
+    captcha?: string
 }
 
 export const authAPI = {
@@ -18,5 +18,8 @@ export const authAPI = {
     },
     logOutUser(){
         return instance.delete<ResponseType>('auth/login')
+    },
+    getCaptcha(){
+        return instance.get<{url: string}>('security/get-captcha-url')
     }
 }

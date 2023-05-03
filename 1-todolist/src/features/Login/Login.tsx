@@ -15,17 +15,20 @@ import {authThunks} from "features/Login/auth-reducer";
 import {FieldErrorType} from "common/types";
 import {useActions} from "common/hooks";
 import {LoginParamsType} from "features/Login/auth-api";
-
+import s from './Login.module.css'
 
 export const Login = () => {
     const {login} = useActions(authThunks)
     const isLoggedIn = useSelector(authSelectors.isLoggedIn)
+    const captchaUrl = useSelector(authSelectors.captcha)
+
 
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
-            rememberMe: false
+            rememberMe: false,
+            captcha: undefined
         },
         validate: (values) => {
             const errors: Partial<LoginParamsType> = {};
@@ -45,9 +48,9 @@ export const Login = () => {
             login({...values})
                 .unwrap()
                 .catch((reason) => {
-                    const{fieldsErrors} = reason
-                    if(fieldsErrors){
-                        fieldsErrors.forEach((el:FieldErrorType) => {
+                    const {fieldsErrors} = reason
+                    if (fieldsErrors) {
+                        fieldsErrors.forEach((el: FieldErrorType) => {
                             formikHelpers.setFieldError(el.field, el.error)
                         })
                     }
@@ -55,13 +58,14 @@ export const Login = () => {
         },
     })
 
-    if(isLoggedIn){
+    if (isLoggedIn) {
         return <Navigate to={'/'}/>
     }
 
     const errorStyle = {
         color: '#d32f2f'
     }
+
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
@@ -80,7 +84,7 @@ export const Login = () => {
                     <FormGroup>
                         <TextField label="Email" margin="normal"
                                    {...formik.getFieldProps('email')}
-                             error={!!formik.errors.email && formik.touched.email}
+                                   error={!!formik.errors.email && formik.touched.email}
                         />
                         <span style={errorStyle}>{formik.errors.email}</span>
                         <TextField type="password"
@@ -92,7 +96,12 @@ export const Login = () => {
                         <FormControlLabel label={'Remember me'}
                                           control={<Checkbox checked={formik.values.rememberMe}
                                                              {...formik.getFieldProps('rememberMe')}/>}
-                                          />
+                        />
+                        {captchaUrl !== null && <div className={s.captchaContainer}><img src={captchaUrl}/>
+                            <TextField type="text"
+                                       label="captcha"
+                                       margin="normal"
+                                       {...formik.getFieldProps('captcha')}/></div>}
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>
